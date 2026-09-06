@@ -1,4 +1,4 @@
-const CACHE_NAME = 'jack-and-jill-v4';
+const CACHE_NAME = 'jack-and-jill-v5';
 const ASSETS_TO_CACHE = [
   './',
   'index.html',
