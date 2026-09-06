@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Jack and Jill - Read & Learn Storybook</title>
   
   <!-- PWA & Mobile Web App Meta -->
@@ -64,51 +64,67 @@
       overflow-x: hidden;
     }
 
-    /* Top Navigation Header */
+    /* Top Navigation Header - Zoom & Mobile Resilient */
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 16px;
+      padding: 8px 12px;
       max-width: 680px;
       margin: 0 auto;
       width: 100%;
       flex-shrink: 0;
+      gap: 8px;
+      box-sizing: border-box;
+      min-width: 0;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       font-family: 'Fredoka', cursive;
       font-weight: 800;
-      font-size: 1.25rem;
+      font-size: clamp(1rem, 3.8vw, 1.25rem);
       color: var(--primary);
+      min-width: 0;
+      flex-shrink: 1;
+      text-decoration: none;
+    }
+
+    .brand-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.2;
     }
 
     .brand-badge {
-      width: 34px;
-      height: 34px;
-      border-radius: 11px;
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      border-radius: 10px;
       background: var(--yellow);
       display: grid;
       place-items: center;
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       box-shadow: 0 3px 8px rgba(255, 210, 51, 0.4);
+      flex-shrink: 0;
     }
 
     .header-controls {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
+      flex-shrink: 0;
     }
 
     .chip-btn {
       background: var(--surface);
       border: 1.5px solid var(--border-soft);
       border-radius: 999px;
-      padding: 5px 11px;
-      font-size: 0.8rem;
+      padding: 5px 9px;
+      font-size: clamp(0.72rem, 2.5vw, 0.8rem);
       font-weight: 800;
       color: var(--primary);
       cursor: pointer;
@@ -117,6 +133,10 @@
       gap: 4px;
       box-shadow: var(--shadow-sm);
       touch-action: manipulation;
+      white-space: nowrap;
+      height: 36px;
+      box-sizing: border-box;
+      flex-shrink: 0;
     }
 
     .icon-btn {
@@ -125,12 +145,15 @@
       border-radius: 12px;
       width: 36px;
       height: 36px;
-      font-size: 1rem;
+      min-width: 36px;
+      font-size: 1.05rem;
       display: grid;
       place-items: center;
       cursor: pointer;
       box-shadow: var(--shadow-sm);
       touch-action: manipulation;
+      box-sizing: border-box;
+      flex-shrink: 0;
     }
 
     .icon-btn:active, .chip-btn:active {
@@ -184,29 +207,40 @@
       align-items: center;
       justify-content: space-between;
       background: var(--surface);
-      padding: 6px 14px;
+      padding: 6px 12px;
       border-radius: 999px;
       border: 1.5px solid var(--border-soft);
       box-shadow: var(--shadow-sm);
       flex-shrink: 0;
+      gap: 8px;
+      min-width: 0;
+      box-sizing: border-box;
     }
 
     .act-title {
       font-family: 'Fredoka', cursive;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: clamp(0.76rem, 3.2vw, 0.95rem);
       color: var(--primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+      flex-shrink: 1;
     }
 
     .stars-cluster {
       display: flex;
-      gap: 4px;
+      gap: 2px;
+      flex-shrink: 0;
+      align-items: center;
     }
 
     .star-item {
-      font-size: 1.25rem;
+      font-size: clamp(1rem, 3.4vw, 1.25rem);
       filter: grayscale(100%) opacity(0.3);
       transition: filter 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      line-height: 1;
     }
 
     .star-item.earned {
@@ -629,11 +663,23 @@
       z-index: 199;
     }
 
-    @media (max-width: 380px) {
-      header { padding: 6px 10px; }
-      main { padding: 0 10px 14px; }
-      .word-chip { font-size: 1.35rem; padding: 4px 10px; }
-      .play-btn { font-size: 1.05rem; padding: 10px 12px; }
+    @media (max-width: 440px) {
+      header { padding: 6px 10px; gap: 5px; }
+      .brand { gap: 5px; }
+      .brand-title { font-size: 1.05rem; }
+      .chip-btn { padding: 4px 7px; font-size: 0.74rem; height: 34px; }
+      .icon-btn { width: 34px; height: 34px; min-width: 34px; }
+    }
+
+    @media (max-width: 360px) {
+      header { padding: 5px 8px; gap: 4px; }
+      .brand-title { display: none; }
+      .chip-btn .chip-label { display: none; }
+      .chip-btn { padding: 4px 6px; min-width: 32px; height: 32px; justify-content: center; }
+      .icon-btn { width: 32px; height: 32px; min-width: 32px; }
+      main { padding: 0 8px 12px; }
+      .word-chip { font-size: 1.25rem; padding: 4px 8px; }
+      .play-btn { font-size: 1rem; padding: 10px 12px; }
     }
 
     /* ==========================================================================
@@ -768,13 +814,6 @@
     }
     .option-card .opt-icon { font-size: 2rem; }
 
-    /* Icon button min size */
-    .icon-btn {
-      min-width: 44px;
-      min-height: 44px;
-      width: 44px;
-      height: 44px;
-    }
 
     /* Word chip min touch target */
     .word-chip {
@@ -887,11 +926,17 @@
   <header>
     <div class="brand">
       <div class="brand-badge">🪣</div>
-      <span>Jack & Jill</span>
+      <span class="brand-title">Jack &amp; Jill</span>
     </div>
     <div class="header-controls">
-      <button id="voiceBtn" class="chip-btn" title="Change Voice">🗣️ Voice</button>
-      <button id="speedBtn" class="chip-btn" title="Reading Pace">🐢 0.8x</button>
+      <button id="voiceBtn" class="chip-btn" title="Change Voice">
+        <span class="chip-icon">🗣️</span>
+        <span id="voiceLabel" class="chip-label">Voice</span>
+      </button>
+      <button id="speedBtn" class="chip-btn" title="Reading Pace">
+        <span id="speedIcon" class="chip-icon">🐢</span>
+        <span id="speedLabel" class="chip-label">0.8x</span>
+      </button>
       <button id="soundToggleBtn" class="icon-btn" title="Sound Effects">🔊</button>
     </div>
   </header>
@@ -2199,8 +2244,14 @@
       if (speechVoices.length > 0) {
         selectedVoiceIndex = (selectedVoiceIndex + 1) % speechVoices.length;
         const v = speechVoices[selectedVoiceIndex];
-        const vName = v.name.split(' ')[0];
-        document.getElementById('voiceBtn').textContent = `🗣️ ${vName}`;
+        let vName = v.name.split(' ')[0].replace(/[^a-zA-Z]/g, '');
+        if (vName.length > 6) vName = vName.substring(0, 5) + '…';
+        const vLabel = document.getElementById('voiceLabel');
+        if (vLabel) {
+          vLabel.textContent = vName || 'Voice';
+        } else {
+          document.getElementById('voiceBtn').textContent = `🗣️ ${vName || 'Voice'}`;
+        }
         sound.playTap();
         speakWord("Jack");
       }
@@ -2211,7 +2262,14 @@
       paceIndex = (paceIndex + 1) % speechPaces.length;
       const p = speechPaces[paceIndex];
       const icon = p < 0.8 ? '🐢' : p > 0.9 ? '🐰' : '🚶';
-      document.getElementById('speedBtn').textContent = `${icon} ${p}x`;
+      const sIcon = document.getElementById('speedIcon');
+      const sLabel = document.getElementById('speedLabel');
+      if (sIcon && sLabel) {
+        sIcon.textContent = icon;
+        sLabel.textContent = `${p}x`;
+      } else {
+        document.getElementById('speedBtn').textContent = `${icon} ${p}x`;
+      }
       sound.playTap();
     };
 
