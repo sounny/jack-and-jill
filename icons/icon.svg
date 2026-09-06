@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7357D9"/>
+      <stop offset="50%" stop-color="#9C80F7"/>
+      <stop offset="100%" stop-color="#BDB0FF"/>
+    </linearGradient>
+    <linearGradient id="hillGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#55D98F"/>
+      <stop offset="100%" stop-color="#2D9A5B"/>
+    </linearGradient>
+    <linearGradient id="pailGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A90E2"/>
+      <stop offset="100%" stop-color="#1B5EAA"/>
+    </linearGradient>
+    <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE066"/>
+      <stop offset="100%" stop-color="#FFAA00"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#20104A" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Background Base with Rounded Corners for Maskable/Standard PWA -->
+  <rect width="512" height="512" rx="110" fill="url(#skyGrad)"/>
+
+  <!-- Sun & Rays -->
+  <circle cx="410" cy="110" r="50" fill="#FFD95A" opacity="0.9"/>
+  <circle cx="410" cy="110" r="65" fill="#FFD95A" opacity="0.3"/>
+
+  <!-- Rolling Green Hill -->
+  <path d="M-20,410 Q140,260 320,330 T532,320 L532,532 L-20,532 Z" fill="url(#hillGrad)"/>
+  <path d="M80,532 Q260,370 532,430 L532,532 Z" fill="#24874E" opacity="0.5"/>
+
+  <!-- Stone Pathway -->
+  <path d="M190,532 Q250,420 300,340" stroke="#FFE9A8" stroke-width="22" stroke-linecap="round" fill="none" opacity="0.75" stroke-dasharray="14 10"/>
+
+  <!-- Cute Water Pail / Bucket (Hero Icon) -->
+  <g transform="translate(196, 175)" filter="url(#shadow)">
+    <!-- Bucket Handle -->
+    <path d="M10,65 Q60,-20 110,65" fill="none" stroke="#D3D7E0" stroke-width="8" stroke-linecap="round"/>
+    
+    <!-- Bucket Body -->
+    <polygon points="12,50 108,50 92,150 28,150" fill="url(#pailGrad)" rx="10"/>
+    <!-- Bucket Rim & Rims -->
+    <ellipse cx="60" cy="50" rx="48" ry="12" fill="#75B4FF"/>
+    <ellipse cx="60" cy="50" rx="40" ry="8" fill="#1C65B5"/>
+    <!-- Water Splashes / Drops -->
+    <circle cx="60" cy="46" r="16" fill="#67D9FF"/>
+    <path d="M42,22 C42,12 50,0 50,0 C50,0 58,12 58,22 C58,27 54,31 50,31 C46,31 42,27 42,22 Z" fill="#67D9FF" transform="rotate(-20 50 15)"/>
+    <path d="M78,28 C78,20 84,10 84,10 C84,10 90,20 90,28 C90,32 87,35 84,35 C81,35 78,32 78,28 Z" fill="#67D9FF" transform="rotate(25 84 25)"/>
+    <!-- Happy Face on Bucket -->
+    <circle cx="46" cy="95" r="5" fill="#FFFFFF"/>
+    <circle cx="74" cy="95" r="5" fill="#FFFFFF"/>
+    <path d="M50,112 Q60,124 70,112" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- Big Sparkling Golden Star -->
+  <g transform="translate(70, 90) scale(0.7)" filter="url(#shadow)">
+    <polygon points="60,5 77,42 118,45 86,73 96,113 60,91 24,113 34,73 2,45 43,42" fill="url(#starGrad)"/>
+    <polygon points="60,18 72,46 102,48 78,69 86,99 60,83 34,99 42,69 18,48 48,46" fill="#FFF4A3" opacity="0.6"/>
+  </g>
+
+  <!-- Small playful sparklers -->
+  <circle cx="340" cy="220" r="8" fill="#FFF9D2"/>
+  <circle cx="120" cy="270" r="6" fill="#FFF9D2"/>
+</svg>

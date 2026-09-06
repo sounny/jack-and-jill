@@ -1,47 +1,1596 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Jack and Jill - Read & Learn</title>
-<style>
-:root{--ink:#20243a;--purple:#7357d9;--purple2:#eee9ff;--yellow:#ffd95a;--green:#45b97c;--bg:#f7f5ff;--white:#fff}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f7f5ff,#fff);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
-main{width:min(900px,100%);margin:auto;padding:18px 16px 32px}.top{text-align:center}.badge{display:inline-block;background:var(--yellow);padding:7px 13px;border-radius:999px;font-weight:800;font-size:.9rem}.top h1{font-size:clamp(2rem,7vw,4rem);margin:10px 0 4px}.top p{margin:0 0 18px;font-size:1.1rem}
-.card{background:var(--white);border:2px solid #e5e0f7;border-radius:28px;padding:clamp(18px,5vw,34px);box-shadow:0 12px 35px #31246b12}.visual{font-size:clamp(3rem,13vw,6rem);display:flex;justify-content:center;gap:10px;margin:4px 0 15px}.line{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;min-height:88px}.word{font-size:clamp(1.7rem,6vw,3.2rem);font-weight:800;padding:9px 12px;border-radius:14px;cursor:pointer;line-height:1.05}.word.active{background:var(--yellow);transform:scale(1.04)}.controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px}.btn{border:0;border-radius:16px;padding:14px 20px;font-size:1.05rem;font-weight:800;cursor:pointer;min-width:145px;touch-action:manipulation}.primary{background:var(--purple);color:#fff}.secondary{background:var(--purple2);color:var(--ink)}.progress{height:10px;background:#ece9f4;border-radius:99px;margin:24px 0 8px;overflow:hidden}.bar{height:100%;background:var(--green);width:0%;transition:.25s}.status{text-align:center;font-weight:700;min-height:24px}.task{margin-top:22px;text-align:center}.task h2{font-size:1.45rem;margin:0 0 10px}.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.choice{background:#fff;border:3px solid #e6e1f5;border-radius:20px;padding:18px 10px;font-size:clamp(1.5rem,5vw,2.3rem);font-weight:800;cursor:pointer;min-height:92px;touch-action:manipulation}.choice.correct{border-color:var(--green);background:#e9faef}.choice.wrong{border-color:#e47b7b;background:#fff0f0}.hint{font-size:.98rem;opacity:.78;margin-top:10px}
-@media(max-width:520px){main{padding:12px}.card{border-radius:22px}.choices{grid-template-columns:1fr 1fr}.btn{width:100%}.word{padding:7px 8px}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>Jack and Jill - Read & Learn Storybook</title>
+  
+  <!-- PWA & Mobile Web App Meta -->
+  <meta name="description" content="An interactive illustrated reading game and nursery rhyme storybook with karaoke read-aloud, phonics, and offline play.">
+  <meta name="theme-color" content="#7357D9">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Jack & Jill">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <style>
+    :root {
+      --primary: #7357D9;
+      --primary-dark: #583BB8;
+      --primary-light: #EFEAFF;
+      --yellow: #FFD95A;
+      --yellow-light: #FFF8D6;
+      --green: #45B97C;
+      --green-light: #E6FAEF;
+      --coral: #FF6B6B;
+      --sky: #E8F5FF;
+      --blue: #3A86FF;
+      --ink: #1E2238;
+      --ink-soft: #555B77;
+      --white: #FFFFFF;
+      --card-bg: #FFFFFF;
+      --border: #E4DFFA;
+      --shadow-sm: 0 4px 14px rgba(60, 40, 130, 0.08);
+      --shadow-lg: 0 16px 40px rgba(50, 30, 110, 0.12);
+      --radius-sm: 14px;
+      --radius-md: 22px;
+      --radius-lg: 32px;
+      --font-display: "Fredoka", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(180deg, #F2EEFF 0%, #FAF8FF 45%, #EAF5FF 100%);
+      color: var(--ink);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      -webkit-user-select: none;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+
+    /* Top Bar */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      max-width: 960px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      font-size: 1.25rem;
+      color: var(--primary);
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--yellow);
+      display: grid;
+      place-items: center;
+      font-size: 1.3rem;
+      box-shadow: 0 4px 10px rgba(255, 217, 90, 0.4);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      width: 44px;
+      height: 44px;
+      font-size: 1.15rem;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.15s ease, background 0.15s;
+    }
+
+    .icon-btn:active {
+      transform: scale(0.92);
+      background: var(--primary-light);
+    }
+
+    /* PWA Install Banner */
+    #pwaInstallBanner {
+      display: none;
+      background: linear-gradient(90deg, #7357D9, #8C70EB);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 16px;
+      margin: 0 16px 12px;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 8px 20px rgba(115, 87, 217, 0.25);
+    }
+
+    #pwaInstallBanner.show {
+      display: flex;
+    }
+
+    .install-text {
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .install-btn {
+      background: var(--yellow);
+      color: var(--ink);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      width: min(940px, 100%);
+      margin: 0 auto;
+      padding: 0 16px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Star Reward Ribbon */
+    .star-ribbon {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--white);
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .act-indicator {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .stars-track {
+      display: flex;
+      gap: 8px;
+    }
+
+    .star-slot {
+      font-size: 1.4rem;
+      filter: grayscale(100%) opacity(0.35);
+      transition: filter 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .star-slot.earned {
+      filter: none;
+      transform: scale(1.18);
+      animation: popStar 0.4s ease forwards;
+    }
+
+    @keyframes popStar {
+      0% { transform: scale(0.6); }
+      70% { transform: scale(1.35); }
+      100% { transform: scale(1.15); }
+    }
+
+    /* Story Card */
+    .story-card {
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: clamp(16px, 4vw, 28px);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated SVG Storybook Stage */
+    .stage-container {
+      width: 100%;
+      height: clamp(180px, 32vw, 280px);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: linear-gradient(180deg, #BFE3FF 0%, #D8EFFF 65%, #C2E7B3 100%);
+      border: 2px solid #D6E4F0;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .stage-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .stage-hint {
+      position: absolute;
+      bottom: 8px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(4px);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--ink-soft);
+      pointer-events: none;
+    }
+
+    /* Rhyme Word Reader */
+    .reader-box {
+      text-align: center;
+      padding: 8px 4px 14px;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .verse-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      width: 100%;
+    }
+
+    .verse-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 10px;
+      align-items: baseline;
+    }
+
+    .word-chip {
+      font-size: clamp(1.6rem, 5vw, 2.75rem);
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 16px;
+      border: 2px solid transparent;
+      background: #F8F6FF;
+      color: var(--ink);
+      cursor: pointer;
+      line-height: 1.1;
+      transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      touch-action: manipulation;
+    }
+
+    .word-chip:hover {
+      background: var(--yellow-light);
+      border-color: var(--yellow);
+    }
+
+    .word-chip:active {
+      transform: scale(0.94);
+    }
+
+    .word-chip.active {
+      background: var(--yellow);
+      border-color: #F0C430;
+      transform: scale(1.08) translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255, 217, 90, 0.45);
+      color: #111;
+    }
+
+    .word-chip.rhyme-match {
+      text-decoration: underline wavy var(--primary);
+      text-underline-offset: 6px;
+    }
+
+    /* Rhyme Family Pill */
+    .rhyme-family-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--ink-soft);
+      background: #F4F1FD;
+      padding: 8px 16px;
+      border-radius: 999px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .rhyme-tag {
+      background: var(--primary);
+      color: white;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+    }
+
+    /* Control Buttons */
+    .controls-grid {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .ctrl-btn {
+      border: 0;
+      border-radius: 20px;
+      padding: 14px 22px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      min-width: 140px;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      touch-action: manipulation;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .ctrl-btn:active {
+      transform: scale(0.96);
+    }
+
+    .ctrl-btn.primary {
+      background: var(--primary);
+      color: var(--white);
+      box-shadow: 0 6px 18px rgba(115, 87, 217, 0.35);
+    }
+
+    .ctrl-btn.primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .ctrl-btn.secondary {
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 2px solid #DFD5FF;
+    }
+
+    .ctrl-btn.secondary:hover {
+      background: #E5DCFF;
+    }
+
+    /* Progress & Status */
+    .progress-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .progress-bar {
+      height: 12px;
+      background: #EAE6F5;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #55D98F, #36B86C);
+      width: 0%;
+      border-radius: 999px;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .status-text {
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      min-height: 22px;
+    }
+
+    /* Phonics Pill Modal / Dropdown */
+    #phonicsPopup {
+      display: none;
+      background: var(--white);
+      border: 2px solid var(--primary);
+      box-shadow: var(--shadow-lg);
+      border-radius: 20px;
+      padding: 12px 18px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 50;
+      text-align: center;
+      animation: popIn 0.2s ease forwards;
+    }
+
+    @keyframes popIn {
+      from { transform: translate(-50%, -45%) scale(0.85); opacity: 0; }
+      to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+
+    .phonics-word {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .phonics-breakdown {
+      font-size: 1.1rem;
+      color: var(--ink-soft);
+      font-weight: 700;
+      margin: 4px 0 8px;
+    }
+
+    /* Comprehension Mini-Task */
+    .challenge-section {
+      background: #FAF8FF;
+      border: 2px dashed #D9D2F3;
+      border-radius: var(--radius-md);
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .challenge-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin: 0;
+      color: var(--ink);
+      text-align: center;
+    }
+
+    .choices-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      width: 100%;
+      max-width: 650px;
+    }
+
+    .choice-card {
+      background: var(--white);
+      border: 3px solid #E6E0F8;
+      border-radius: 18px;
+      padding: 14px 10px;
+      font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+      font-weight: 800;
+      cursor: pointer;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      box-shadow: var(--shadow-sm);
+      touch-action: manipulation;
+      transition: all 0.15s ease;
+    }
+
+    .choice-card:active {
+      transform: scale(0.95);
+    }
+
+    .choice-card .choice-label {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--ink-soft);
+    }
+
+    .choice-card.correct {
+      border-color: var(--green);
+      background: var(--green-light);
+      transform: scale(1.02);
+    }
+
+    .choice-card.wrong {
+      border-color: var(--coral);
+      background: #FFF0F0;
+      animation: shake 0.35s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+
+    /* Celebration Modal */
+    .celebration-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 20, 70, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .celebration-overlay.active {
+      display: flex;
+    }
+
+    .celebration-card {
+      background: white;
+      border-radius: 32px;
+      padding: 32px 24px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .celebration-card h2 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin: 10px 0;
+    }
+
+    .trophy-badge {
+      font-size: 4.5rem;
+      margin-bottom: 8px;
+    }
+
+    .celebration-stars {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      font-size: 2.2rem;
+      margin: 16px 0;
+    }
+
+    /* Confetti Canvas */
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    /* Speed Control Pill */
+    .speed-toggle {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    @media (max-width: 600px) {
+      main { padding: 0 12px 20px; }
+      .story-card { border-radius: 24px; padding: 14px 12px; }
+      .choices-grid { grid-template-columns: 1fr; }
+      .ctrl-btn { flex: 1 1 45%; min-width: 130px; padding: 12px 14px; font-size: 0.95rem; }
+      .word-chip { padding: 4px 10px; font-size: clamp(1.4rem, 6.5vw, 2.1rem); }
+    }
+  </style>
 </head>
 <body>
-<main>
-<section class="top"><span class="badge">READ • LISTEN • LEARN</span><h1>Jack and Jill</h1><p>Listen to the rhyme. Tap any word to hear it.</p></section>
-<section class="card">
-<div class="visual" aria-hidden="true"><span>🧒</span><span>👧</span><span>⛰️</span><span>🪣</span></div>
-<div id="line" class="line" aria-live="polite"></div>
-<div class="controls"><button id="read" class="btn primary">🔊 Read to me</button><button id="pause" class="btn secondary">⏸ Pause</button><button id="restart" class="btn secondary">↺ Start over</button></div>
-<div class="progress"><div id="bar" class="bar"></div></div><div id="status" class="status">Ready to read</div>
-<div class="task"><h2>Which picture matches?</h2><div id="choices" class="choices"></div><div class="hint">Tap the best answer.</div></div>
-</section>
-</main>
-<script>
-const lines=[
- {text:"Jack and Jill went up the hill",emoji:"🧒 👧 ⛰️",choices:["🧒 👧 ⛰️","🏠 🐈 🌳"],answer:0},
- {text:"To fetch a pail of water",emoji:"🪣 💧",choices:["🍎 🍎 🍎","🪣 💧"],answer:1},
- {text:"Jack fell down and broke his crown",emoji:"⬇️ 👑",choices:["⬇️ 👑","☀️ 🌈"],answer:0},
- {text:"And Jill came tumbling after",emoji:"🧒 👧 ⬇️",choices:["🧒 👧 ⬇️","🐟 🌊 🐠"],answer:0},
- {text:"Up Jack got and home did trot",emoji:"🏠 🧒",choices:["🏠 🧒","⛰️ 🦅"],answer:0}
-];
-let li=0,wi=-1,timer=null;
-const line=document.getElementById('line'),bar=document.getElementById('bar'),status=document.getElementById('status'),choices=document.getElementById('choices');
-function words(){return lines[li].text.split(/\s+/)}
-function render(){line.innerHTML='';words().forEach((w,i)=>{const b=document.createElement('button');b.className='word';b.textContent=w;b.onclick=()=>speakWord(w);line.appendChild(b)});bar.style.width=((li)/lines.length*100)+'%';status.textContent=`Line ${li+1} of ${lines.length}`;renderChoices()}
-function renderChoices(){choices.innerHTML='';lines[li].choices.forEach((c,i)=>{const b=document.createElement('button');b.className='choice';b.textContent=c;b.onclick=()=>check(i,b);choices.appendChild(b)})}
-function speak(text){if(!('speechSynthesis'in window)){status.textContent='Your browser does not support read aloud.';return} speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=.82;u.pitch=1.05;u.onboundary=e=>{if(e.name==='word')highlightAt(e.charIndex)};u.onend=()=>{wi=-1;document.querySelectorAll('.word').forEach(x=>x.classList.remove('active'));status.textContent=`Line ${li+1} complete`};speechSynthesis.speak(u)}
-function highlightAt(pos){const ws=words();let total=0;let idx=0;for(let i=0;i<ws.length;i++){if(pos>=total)idx=i;total+=ws[i].length+1}wi=idx;document.querySelectorAll('.word').forEach((x,i)=>x.classList.toggle('active',i===idx));}
-function speakWord(w){speechSynthesis?.cancel();speak(w.replace(/[.,!?]/g,''))}
-function readCurrent(){speechSynthesis?.cancel();speak(lines[li].text);}
-function check(i,b){document.querySelectorAll('.choice').forEach(x=>x.disabled=true);if(i===lines[li].answer){b.classList.add('correct');status.textContent='Correct!';setTimeout(()=>{if(li<lines.length-1){li++;render();readCurrent()}else{bar.style.width='100%';status.textContent='Great job! You finished the rhyme.'}},700)}else{b.classList.add('wrong');status.textContent='Try again.';setTimeout(()=>{b.classList.remove('wrong');document.querySelectorAll('.choice').forEach(x=>x.disabled=false)},500)}}
-document.getElementById('read').onclick=readCurrent;document.getElementById('pause').onclick=()=>{if(speechSynthesis.speaking&&!speechSynthesis.paused){speechSynthesis.pause();status.textContent='Paused'}else if(speechSynthesis.paused){speechSynthesis.resume();status.textContent='Reading...'}};document.getElementById('restart').onclick=()=>{speechSynthesis?.cancel();li=0;render();status.textContent='Ready to read'};render();
-</script>
+
+  <!-- Top Header Navigation -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">🪣</div>
+      <span>Jack & Jill</span>
+    </div>
+    <div class="top-actions">
+      <button id="speedToggle" class="speed-toggle" title="Speech Speed">🐢 0.8x</button>
+      <button id="muteBtn" class="icon-btn" title="Toggle Sound">🔊</button>
+      <button id="fullscreenBtn" class="icon-btn" title="Full Screen">⛶</button>
+    </div>
+  </header>
+
+  <!-- PWA Install Banner -->
+  <div id="pwaInstallBanner">
+    <div class="install-text">
+      <span>📱</span>
+      <span>Add to Home Screen for Offline Play!</span>
+    </div>
+    <button id="installAppBtn" class="install-btn">Install</button>
+  </div>
+
+  <main>
+    <!-- Star Milestones Ribbon -->
+    <div class="star-ribbon">
+      <span id="actLabel" class="act-indicator">Act 1: The Hill</span>
+      <div class="stars-track">
+        <span class="star-slot" data-star="0">⭐</span>
+        <span class="star-slot" data-star="1">⭐</span>
+        <span class="star-slot" data-star="2">⭐</span>
+        <span class="star-slot" data-star="3">⭐</span>
+        <span class="star-slot" data-star="4">⭐</span>
+      </div>
+    </div>
+
+    <!-- Main Story Card -->
+    <section class="story-card">
+      <!-- Animated SVG Storybook Stage -->
+      <div id="storybookStage" class="stage-container" title="Tap elements in the picture!">
+        <svg id="stageSvg" class="stage-svg" viewBox="0 0 800 360" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#80C3FF"/>
+              <stop offset="100%" stop-color="#D9F0FF"/>
+            </linearGradient>
+            <linearGradient id="hillFront" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#5CD389"/>
+              <stop offset="100%" stop-color="#369E58"/>
+            </linearGradient>
+            <linearGradient id="hillBack" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#7BE29F"/>
+              <stop offset="100%" stop-color="#4CB872"/>
+            </linearGradient>
+            <linearGradient id="pathGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFECB3"/>
+              <stop offset="100%" stop-color="#E8C882"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Sky Background -->
+          <rect width="800" height="360" fill="url(#skyGrad)"/>
+
+          <!-- Smiling Sun (Interactive) -->
+          <g id="svgSun" style="cursor: pointer; transform-origin: 720px 70px;">
+            <circle cx="720" cy="70" r="42" fill="#FFD95A"/>
+            <circle cx="720" cy="70" r="54" fill="#FFD95A" opacity="0.3"/>
+            <!-- Sun Face -->
+            <circle cx="708" cy="65" r="4" fill="#6B4B00"/>
+            <circle cx="732" cy="65" r="4" fill="#6B4B00"/>
+            <path d="M712,78 Q720,88 728,78" stroke="#6B4B00" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <ellipse cx="703" cy="73" rx="4" ry="2" fill="#FF9E9E"/>
+            <ellipse cx="737" cy="73" rx="4" ry="2" fill="#FF9E9E"/>
+          </g>
+
+          <!-- Drifting Clouds -->
+          <g opacity="0.85">
+            <!-- Cloud 1 -->
+            <path d="M120,60 Q130,40 155,45 Q180,35 205,50 Q225,50 225,70 Q215,85 190,85 L130,85 Q110,80 120,60 Z" fill="#FFFFFF"/>
+            <!-- Cloud 2 -->
+            <path d="M420,80 Q435,60 460,65 Q485,50 515,70 Q535,70 535,90 L430,90 Q410,85 420,80 Z" fill="#FFFFFF" opacity="0.75"/>
+          </g>
+
+          <!-- Distant Hills -->
+          <path d="M-50,220 Q200,120 500,180 T900,150 L900,360 L-50,360 Z" fill="url(#hillBack)"/>
+
+          <!-- Front Rolling Hill -->
+          <path d="M-20,360 Q180,170 520,220 T850,230 L850,360 Z" fill="url(#hillFront)"/>
+
+          <!-- Winding Cobblestone Pathway -->
+          <path d="M100,360 Q340,310 440,245 T580,185" stroke="url(#pathGrad)" stroke-width="32" stroke-linecap="round" fill="none"/>
+          <path d="M100,360 Q340,310 440,245 T580,185" stroke="#D3B26F" stroke-width="6" stroke-dasharray="16 12" stroke-linecap="round" fill="none" opacity="0.6"/>
+
+          <!-- Cozy Cottage (Top Right / Left based on scene) -->
+          <g id="svgCottage" transform="translate(40, 210)" style="cursor: pointer;">
+            <!-- Chimney Smoke -->
+            <circle cx="95" cy="-20" r="7" fill="#FFFFFF" opacity="0.6"/>
+            <circle cx="102" cy="-35" r="10" fill="#FFFFFF" opacity="0.5"/>
+            <!-- Chimney -->
+            <rect x="90" y="-12" width="14" height="24" fill="#B35446" rx="2"/>
+            <!-- Cottage Body -->
+            <rect x="20" y="8" width="85" height="65" fill="#FFFBF0" stroke="#D8CEBA" stroke-width="2" rx="4"/>
+            <!-- Roof -->
+            <polygon points="12,12 62,-26 112,12" fill="#D25D4A"/>
+            <!-- Door -->
+            <rect x="48" y="35" width="24" height="38" fill="#8B5A2B" rx="4"/>
+            <circle cx="66" cy="54" r="2.5" fill="#FFE066"/>
+            <!-- Window -->
+            <rect x="26" y="24" width="16" height="16" fill="#A4D8FF" rx="2"/>
+          </g>
+
+          <!-- Rustic Stone Well at Hilltop (Interactive) -->
+          <g id="svgWell" transform="translate(560, 120)" style="cursor: pointer;">
+            <!-- Well Stone Base -->
+            <ellipse cx="45" cy="82" rx="38" ry="14" fill="#7D8597"/>
+            <rect x="7" y="58" width="76" height="26" fill="#8C93A8" rx="4"/>
+            <!-- Well Opening / Dark Water -->
+            <ellipse cx="45" cy="58" rx="38" ry="12" fill="#2A3950"/>
+            <ellipse cx="45" cy="60" rx="30" ry="8" fill="#3A86FF" opacity="0.8"/>
+            <!-- Wooden Posts & Roof -->
+            <rect x="12" y="10" width="8" height="50" fill="#7A4E2D" rx="2"/>
+            <rect x="70" y="10" width="8" height="50" fill="#7A4E2D" rx="2"/>
+            <!-- Roof Canopy -->
+            <polygon points="2,14 45,-12 88,14" fill="#A8422B"/>
+            <!-- Crank & Spindle -->
+            <line x1="20" y1="28" x2="70" y2="28" stroke="#5C381E" stroke-width="6"/>
+          </g>
+
+          <!-- Water Bucket (Interactive) -->
+          <g id="svgBucket" transform="translate(510, 195)" style="cursor: pointer;">
+            <!-- Bucket Handle -->
+            <path d="M4,16 Q20,-6 36,16" fill="none" stroke="#8898AA" stroke-width="3" stroke-linecap="round"/>
+            <!-- Bucket Body -->
+            <polygon points="6,14 34,14 29,42 11,42" fill="#3A86FF"/>
+            <ellipse cx="20" cy="14" rx="14" ry="4" fill="#6CB2FF"/>
+            <!-- Water Drops -->
+            <circle id="drop1" cx="38" cy="18" r="4" fill="#67D9FF"/>
+            <circle id="drop2" cx="44" cy="28" r="3" fill="#67D9FF"/>
+          </g>
+
+          <!-- Character Dynamic Actor Group -->
+          <g id="svgCharacters" transform="translate(300, 175)">
+            <!-- Jack Actor -->
+            <g id="actorJack" transform="translate(0, 0)">
+              <!-- Body -->
+              <rect x="10" y="42" width="24" height="34" rx="6" fill="#3A86FF"/>
+              <!-- Legs -->
+              <rect x="12" y="74" width="8" height="24" rx="3" fill="#254B8C"/>
+              <rect x="24" y="74" width="8" height="24" rx="3" fill="#254B8C"/>
+              <!-- Head -->
+              <circle cx="22" cy="24" r="18" fill="#FFDFC4"/>
+              <!-- Brown Hair -->
+              <path d="M6,20 Q22,4 38,20 Q22,12 6,20 Z" fill="#6A3B14"/>
+              <!-- Happy Face -->
+              <circle cx="17" cy="24" r="2.5" fill="#333"/>
+              <circle cx="27" cy="24" r="2.5" fill="#333"/>
+              <path d="M18,31 Q22,37 26,31" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <!-- Crown / Cap / Plaster -->
+              <polygon id="jackCrown" points="10,12 16,4 22,10 28,4 34,12" fill="#FFD95A"/>
+              <rect id="jackPlaster" x="14" y="16" width="16" height="8" rx="2" fill="#D2A06E" stroke="#8C582B" stroke-width="1.5" style="display: none;"/>
+            </g>
+
+            <!-- Jill Actor -->
+            <g id="actorJill" transform="translate(50, 6)">
+              <!-- Dress -->
+              <polygon points="12,42 36,42 42,76 6,76" fill="#FF6B8B"/>
+              <!-- Legs -->
+              <rect x="14" y="74" width="7" height="22" rx="3" fill="#FFE5D0"/>
+              <rect x="27" y="74" width="7" height="22" rx="3" fill="#FFE5D0"/>
+              <!-- Shoes -->
+              <rect x="12" y="93" width="10" height="6" rx="3" fill="#C92A4C"/>
+              <rect x="27" y="93" width="10" height="6" rx="3" fill="#C92A4C"/>
+              <!-- Head -->
+              <circle cx="24" cy="24" r="18" fill="#FFDFC4"/>
+              <!-- Pigtails / Blonde Hair -->
+              <path d="M8,22 Q24,6 40,22 Q24,14 8,22 Z" fill="#E6A122"/>
+              <circle cx="4" cy="24" r="7" fill="#E6A122"/>
+              <circle cx="44" cy="24" r="7" fill="#E6A122"/>
+              <!-- Face -->
+              <circle cx="19" cy="24" r="2.5" fill="#333"/>
+              <circle cx="29" cy="24" r="2.5" fill="#333"/>
+              <path d="M20,31 Q24,37 28,31" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <ellipse cx="14" cy="29" rx="3" ry="1.5" fill="#FF9999"/>
+              <ellipse cx="34" cy="29" rx="3" ry="1.5" fill="#FF9999"/>
+            </g>
+          </g>
+
+          <!-- Wild Daisies on the Hill -->
+          <g fill="#FFFFFF" opacity="0.9">
+            <circle cx="160" cy="330" r="4"/><circle cx="168" cy="332" r="4"/><circle cx="164" cy="326" r="4"/>
+            <circle cx="340" cy="285" r="4"/><circle cx="348" cy="287" r="4"/><circle cx="344" cy="281" r="4"/>
+            <circle cx="480" cy="310" r="4"/><circle cx="488" cy="312" r="4"/><circle cx="484" cy="306" r="4"/>
+          </g>
+        </svg>
+        <div class="stage-hint">👆 Tap anything to explore!</div>
+      </div>
+
+      <!-- Karaoke Reader Box -->
+      <div class="reader-box">
+        <div id="verseContainer" class="verse-lines" aria-live="polite"></div>
+        <div id="rhymeFamily" class="rhyme-family-bar"></div>
+      </div>
+
+      <!-- Playback Controls -->
+      <div class="controls-grid">
+        <button id="readBtn" class="ctrl-btn primary" title="Listen to this verse">
+          <span>🔊</span> <span>Read to Me</span>
+        </button>
+        <button id="pauseBtn" class="ctrl-btn secondary" title="Pause or resume">
+          <span>⏸</span> <span>Pause</span>
+        </button>
+        <button id="restartBtn" class="ctrl-btn secondary" title="Start from Act 1">
+          <span>↺</span> <span>Start Over</span>
+        </button>
+      </div>
+
+      <!-- Progress Track -->
+      <div class="progress-wrapper">
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+        <div id="statusLabel" class="status-text">Ready to explore!</div>
+      </div>
+
+      <!-- Interactive Comprehension Mini-Task -->
+      <div class="challenge-section">
+        <h2 id="taskQuestion" class="challenge-title">Which picture matches?</h2>
+        <div id="choicesGrid" class="choices-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Tap-Word Phonics Popup -->
+  <div id="phonicsPopup">
+    <div id="popupWord" class="phonics-word">water</div>
+    <div id="popupPhonics" class="phonics-breakdown">wa · ter</div>
+    <button id="closePhonicsBtn" class="install-btn" style="margin-top:6px;">Got It!</button>
+  </div>
+
+  <!-- Confetti Canvas for Grand Finale -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Story Completion Modal -->
+  <div id="celebrationModal" class="celebration-overlay">
+    <div class="celebration-card">
+      <div class="trophy-badge">🏆</div>
+      <h2>Super Reader!</h2>
+      <p style="font-size:1.15rem; color:var(--ink-soft); margin:0;">You read the whole story of Jack and Jill and collected all 5 stars!</p>
+      <div class="celebration-stars">⭐⭐⭐⭐⭐</div>
+      <button id="playAgainBtn" class="ctrl-btn primary" style="width:100%; margin-top:14px;">
+        <span>🎉</span> <span>Read Again!</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       1. STORY DATA - FULL 5-ACT NARRATIVE WITH PHONICS & RHYMES
+       ========================================================================== */
+    const STORY_ACTS = [
+      {
+        actNumber: 1,
+        title: "Act 1: Up the Hill",
+        lines: [
+          "Jack and Jill went up the hill",
+          "To fetch a pail of water."
+        ],
+        rhymes: ["hill", "Jill"],
+        phonics: {
+          "Jack": "J · ack",
+          "and": "a · nd",
+          "Jill": "J · ill",
+          "went": "w · e · nt",
+          "up": "u · p",
+          "the": "th · e",
+          "hill": "h · ill",
+          "To": "T · o",
+          "fetch": "f · e · tch",
+          "a": "a",
+          "pail": "p · ail",
+          "of": "o · f",
+          "water": "wa · ter"
+        },
+        characterPos: { x: 340, y: 190, jackR: 0, jillR: 0, showCrown: true, showPlaster: false },
+        bucketPos: { x: 500, y: 175, rot: 0 },
+        question: "Why did Jack and Jill climb the hill?",
+        choices: [
+          { icon: "🪣 💧", text: "To fetch water", correct: true },
+          { icon: "🍎 🌳", text: "To pick apples", correct: false }
+        ]
+      },
+      {
+        actNumber: 2,
+        title: "Act 2: The Tumble & Spill",
+        lines: [
+          "Jack fell down and broke his crown,",
+          "And Jill came tumbling after."
+        ],
+        rhymes: ["down", "crown"],
+        phonics: {
+          "Jack": "J · ack",
+          "fell": "f · ell",
+          "down": "d · own",
+          "and": "a · nd",
+          "broke": "br · oke",
+          "his": "h · is",
+          "crown": "cr · own",
+          "And": "A · nd",
+          "Jill": "J · ill",
+          "came": "c · ame",
+          "tumbling": "tum · bling",
+          "after": "af · ter"
+        },
+        characterPos: { x: 230, y: 240, jackR: -75, jillR: -45, showCrown: false, showPlaster: false },
+        bucketPos: { x: 380, y: 220, rot: 95 },
+        question: "What happened to Jack's crown?",
+        choices: [
+          { icon: "👑 ⬇️", text: "It fell down & broke", correct: true },
+          { icon: "☀️ 🌈", text: "It turned into a rainbow", correct: false }
+        ]
+      },
+      {
+        actNumber: 3,
+        title: "Act 3: Trotting Home",
+        lines: [
+          "Up Jack got, and home did trot,",
+          "As fast as he could caper."
+        ],
+        rhymes: ["got", "trot"],
+        phonics: {
+          "Up": "U · p",
+          "Jack": "J · ack",
+          "got": "g · ot",
+          "and": "a · nd",
+          "home": "h · ome",
+          "did": "d · id",
+          "trot": "tr · ot",
+          "As": "A · s",
+          "fast": "f · a · st",
+          "as": "a · s",
+          "he": "h · e",
+          "could": "c · ould",
+          "caper": "ca · per"
+        },
+        characterPos: { x: 170, y: 225, jackR: 0, jillR: 0, showCrown: false, showPlaster: false },
+        bucketPos: { x: 500, y: 175, rot: 0 },
+        question: "How did Jack head home?",
+        choices: [
+          { icon: "🏠 🏃", text: "Trotted as fast as he could", correct: true },
+          { icon: "😴 🛏️", text: "Went to sleep on the hill", correct: false }
+        ]
+      },
+      {
+        actNumber: 4,
+        title: "Act 4: Old Dame Dob",
+        lines: [
+          "To old Dame Dob, who patched his knob,",
+          "With vinegar and brown paper."
+        ],
+        rhymes: ["Dob", "knob", "caper", "paper"],
+        phonics: {
+          "To": "T · o",
+          "old": "o · ld",
+          "Dame": "D · ame",
+          "Dob": "D · ob",
+          "who": "wh · o",
+          "patched": "p · atched",
+          "his": "h · is",
+          "knob": "kn · ob",
+          "With": "W · ith",
+          "vinegar": "vin · e · gar",
+          "and": "a · nd",
+          "brown": "br · own",
+          "paper": "pa · per"
+        },
+        characterPos: { x: 95, y: 220, jackR: 0, jillR: 0, showCrown: false, showPlaster: true },
+        bucketPos: { x: 500, y: 175, rot: 0 },
+        question: "What did Dame Dob use to patch Jack?",
+        choices: [
+          { icon: "📜 🩹", text: "Brown paper & vinegar", correct: true },
+          { icon: "🍦 🍰", text: "Ice cream & cake", correct: false }
+        ]
+      },
+      {
+        actNumber: 5,
+        title: "Act 5: Smiles & Cured Spills",
+        lines: [
+          "Then Jill came in, and she did grin,",
+          "To see Jack's paper plaster;",
+          "Dame Dob cured Jill of her big spill,",
+          "And they were happy after!"
+        ],
+        rhymes: ["in", "grin", "plaster", "after"],
+        phonics: {
+          "Then": "Th · en",
+          "Jill": "J · ill",
+          "came": "c · ame",
+          "in": "i · n",
+          "and": "a · nd",
+          "she": "sh · e",
+          "did": "d · id",
+          "grin": "gr · in",
+          "To": "T · o",
+          "see": "s · ee",
+          "Jack's": "J · ack's",
+          "paper": "pa · per",
+          "plaster": "plas · ter",
+          "Dame": "D · ame",
+          "Dob": "D · ob",
+          "cured": "c · ured",
+          "her": "h · er",
+          "big": "b · ig",
+          "spill": "sp · ill",
+          "they": "th · ey",
+          "were": "w · ere",
+          "happy": "hap · py",
+          "after": "af · ter"
+        },
+        characterPos: { x: 105, y: 215, jackR: 0, jillR: 0, showCrown: false, showPlaster: true },
+        bucketPos: { x: 500, y: 175, rot: 0 },
+        question: "How did the story end?",
+        choices: [
+          { icon: "😄 💖", text: "All were cured & happy!", correct: true },
+          { icon: "🌧️ 😢", text: "They stayed lost in the rain", correct: false }
+        ]
+      }
+    ];
+
+    /* ==========================================================================
+       2. ZERO-DEPENDENCY NATIVE WEB AUDIO PROCEDURAL SYNTHESIZER
+       ========================================================================== */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.isMuted = false;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            this.ctx = new AudioContext();
+          }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      playTone(freq, duration = 0.15, type = 'sine', gain = 0.25) {
+        if (this.isMuted) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const osc = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+
+        g.gain.setValueAtTime(gain, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+
+        osc.connect(g);
+        g.connect(this.ctx.destination);
+
+        osc.start();
+        osc.stop(this.ctx.currentTime + duration);
+      }
+
+      playChime() {
+        // Pentatonic bright chime
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        notes.forEach((freq, idx) => {
+          setTimeout(() => this.playTone(freq, 0.28, 'triangle', 0.22), idx * 80);
+        });
+      }
+
+      playTapWord() {
+        this.playTone(440, 0.08, 'sine', 0.18);
+      }
+
+      playTumble() {
+        if (this.isMuted) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const osc = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(580, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(140, this.ctx.currentTime + 0.45);
+
+        g.gain.setValueAtTime(0.25, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.45);
+
+        osc.connect(g);
+        g.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.45);
+      }
+
+      playSplash() {
+        if (this.isMuted) return;
+        this.init();
+        if (!this.ctx) return;
+
+        // Bubble pop sound
+        const osc = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(220, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(680, this.ctx.currentTime + 0.12);
+
+        g.gain.setValueAtTime(0.3, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.15);
+
+        osc.connect(g);
+        g.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.15);
+      }
+
+      playFanfare() {
+        if (this.isMuted) return;
+        const chord = [
+          { f: 523.25, d: 0.2, t: 0 },
+          { f: 659.25, d: 0.2, t: 120 },
+          { f: 783.99, d: 0.25, t: 240 },
+          { f: 1046.50, d: 0.6, t: 380 }
+        ];
+        chord.forEach(n => setTimeout(() => this.playTone(n.f, n.d, 'triangle', 0.3), n.t));
+      }
+    }
+
+    const sound = new SoundEngine();
+
+    /* ==========================================================================
+       3. APPLICATION STATE & CONTROLLER
+       ========================================================================== */
+    let currentActIndex = 0;
+    let earnedStars = [false, false, false, false, false];
+    let speechRates = [0.8, 0.7, 0.95];
+    let speechRateIndex = 0;
+    let isSpeaking = false;
+
+    // DOM Elements
+    const actLabel = document.getElementById('actLabel');
+    const verseContainer = document.getElementById('verseContainer');
+    const rhymeFamily = document.getElementById('rhymeFamily');
+    const progressFill = document.getElementById('progressFill');
+    const statusLabel = document.getElementById('statusLabel');
+    const choicesGrid = document.getElementById('choicesGrid');
+    const taskQuestion = document.getElementById('taskQuestion');
+    const phonicsPopup = document.getElementById('phonicsPopup');
+    const popupWord = document.getElementById('popupWord');
+    const popupPhonics = document.getElementById('popupPhonics');
+    const closePhonicsBtn = document.getElementById('closePhonicsBtn');
+    const celebrationModal = document.getElementById('celebrationModal');
+    const playAgainBtn = document.getElementById('playAgainBtn');
+    const speedToggle = document.getElementById('speedToggle');
+    const muteBtn = document.getElementById('muteBtn');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+    // SVG Stage Elements
+    const svgCharacters = document.getElementById('svgCharacters');
+    const actorJack = document.getElementById('actorJack');
+    const actorJill = document.getElementById('actorJill');
+    const jackCrown = document.getElementById('jackCrown');
+    const jackPlaster = document.getElementById('jackPlaster');
+    const svgBucket = document.getElementById('svgBucket');
+    const svgSun = document.getElementById('svgSun');
+    const svgWell = document.getElementById('svgWell');
+    const svgCottage = document.getElementById('svgCottage');
+
+    /* ==========================================================================
+       4. SPEECH SYNTHESIS ENGINE
+       ========================================================================== */
+    function getCleanWord(w) {
+      return w.replace(/[.,!?;:"'()]/g, '').trim();
+    }
+
+    function getAllWordsInAct(act) {
+      return act.lines.join(' ').split(/\s+/).map(getCleanWord).filter(Boolean);
+    }
+
+    function speakText(text, onWordCallback, onEndCallback) {
+      if (!('speechSynthesis' in window)) {
+        statusLabel.textContent = "Speech synthesis not supported in this browser.";
+        if (onEndCallback) onEndCallback();
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+      sound.init();
+
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.rate = speechRates[speechRateIndex];
+      utter.pitch = 1.05;
+
+      // Select warm natural voice if available
+      const voices = window.speechSynthesis.getVoices();
+      const preferred = voices.find(v => (v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Samantha') || v.name.includes('Google US English'))))
+                     || voices.find(v => v.lang.startsWith('en'));
+      if (preferred) utter.voice = preferred;
+
+      utter.onboundary = (e) => {
+        if (e.name === 'word' && onWordCallback) {
+          onWordCallback(e.charIndex);
+        }
+      };
+
+      utter.onend = () => {
+        isSpeaking = false;
+        document.querySelectorAll('.word-chip').forEach(el => el.classList.remove('active'));
+        if (onEndCallback) onEndCallback();
+      };
+
+      utter.onerror = () => {
+        isSpeaking = false;
+        document.querySelectorAll('.word-chip').forEach(el => el.classList.remove('active'));
+      };
+
+      isSpeaking = true;
+      window.speechSynthesis.speak(utter);
+    }
+
+    function speakWord(rawWord) {
+      const clean = getCleanWord(rawWord);
+      sound.playTapWord();
+
+      // Show Phonics Popup
+      const act = STORY_ACTS[currentActIndex];
+      const phonicsVal = act.phonics[clean] || clean.split('').join(' · ');
+      popupWord.textContent = clean;
+      popupPhonics.textContent = phonicsVal;
+      phonicsPopup.style.display = 'block';
+
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(clean);
+        utter.rate = 0.75;
+        utter.pitch = 1.1;
+        window.speechSynthesis.speak(utter);
+      }
+    }
+
+    function readCurrentAct() {
+      const act = STORY_ACTS[currentActIndex];
+      const fullText = act.lines.join(' ');
+      statusLabel.textContent = "Listening to the story...";
+
+      const allChips = Array.from(document.querySelectorAll('.word-chip'));
+
+      speakText(
+        fullText,
+        (charIndex) => {
+          // Calculate which word chip is active
+          let count = 0;
+          let activeIndex = -1;
+          for (let i = 0; i < allChips.length; i++) {
+            const word = allChips[i].dataset.word;
+            if (charIndex >= count && charIndex < count + word.length + 1) {
+              activeIndex = i;
+              break;
+            }
+            count += word.length + 1;
+          }
+
+          allChips.forEach((chip, i) => {
+            chip.classList.toggle('active', i === activeIndex);
+          });
+        },
+        () => {
+          statusLabel.textContent = `Completed ${act.title}! Pick the matching answer.`;
+        }
+      );
+    }
+
+    /* ==========================================================================
+       5. RENDER & SCENE ANIMATION
+       ========================================================================== */
+    function renderCurrentAct() {
+      const act = STORY_ACTS[currentActIndex];
+
+      // Update Labels & Progress
+      actLabel.textContent = act.title;
+      progressFill.style.width = `${((currentActIndex) / STORY_ACTS.length) * 100}%`;
+      statusLabel.textContent = "Tap any word to hear phonics!";
+
+      // Update Star Slots
+      document.querySelectorAll('.star-slot').forEach((slot, idx) => {
+        slot.classList.toggle('earned', earnedStars[idx]);
+      });
+
+      // Render Words by Line
+      verseContainer.innerHTML = '';
+      act.lines.forEach((lineStr) => {
+        const row = document.createElement('div');
+        row.className = 'verse-row';
+
+        const words = lineStr.split(/\s+/);
+        words.forEach((w) => {
+          const btn = document.createElement('button');
+          btn.className = 'word-chip';
+          btn.textContent = w;
+          btn.dataset.word = w;
+
+          const clean = getCleanWord(w);
+          if (act.rhymes.includes(clean)) {
+            btn.classList.add('rhyme-match');
+          }
+
+          btn.onclick = () => speakWord(w);
+          row.appendChild(btn);
+        });
+
+        verseContainer.appendChild(row);
+      });
+
+      // Render Rhyme Family
+      if (act.rhymes.length > 0) {
+        rhymeFamily.style.display = 'flex';
+        rhymeFamily.innerHTML = `<span>Rhyme Family:</span>` +
+          act.rhymes.map(r => `<span class="rhyme-tag">${r}</span>`).join(' ');
+      } else {
+        rhymeFamily.style.display = 'none';
+      }
+
+      // Render Challenge Question & Choices
+      taskQuestion.textContent = act.question;
+      choicesGrid.innerHTML = '';
+      act.choices.forEach((choice, idx) => {
+        const card = document.createElement('button');
+        card.className = 'choice-card';
+        card.innerHTML = `<span style="font-size: 2rem;">${choice.icon}</span><span class="choice-label">${choice.text}</span>`;
+        card.onclick = () => handleChoice(choice, card);
+        choicesGrid.appendChild(card);
+      });
+
+      // Update SVG Storybook Stage
+      updateStageScene(act);
+    }
+
+    function updateStageScene(act) {
+      // Character positioning & animations
+      const cp = act.characterPos;
+      svgCharacters.style.transition = "transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)";
+      svgCharacters.setAttribute('transform', `translate(${cp.x}, ${cp.y})`);
+
+      actorJack.style.transition = "transform 0.5s ease";
+      actorJack.setAttribute('transform', `rotate(${cp.jackR}, 22, 50)`);
+
+      actorJill.style.transition = "transform 0.5s ease";
+      actorJill.setAttribute('transform', `translate(50, 6) rotate(${cp.jillR}, 24, 50)`);
+
+      // Accessories
+      jackCrown.style.display = cp.showCrown ? 'block' : 'none';
+      jackPlaster.style.display = cp.showPlaster ? 'block' : 'none';
+
+      // Bucket
+      const bp = act.bucketPos;
+      svgBucket.style.transition = "transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)";
+      svgBucket.setAttribute('transform', `translate(${bp.x}, ${bp.y}) rotate(${bp.rot}, 20, 25)`);
+    }
+
+    /* ==========================================================================
+       6. CHALLENGE & STAR REWARD SYSTEM
+       ========================================================================== */
+    function handleChoice(choice, cardEl) {
+      document.querySelectorAll('.choice-card').forEach(b => b.disabled = true);
+
+      if (choice.correct) {
+        cardEl.classList.add('correct');
+        sound.playChime();
+        earnedStars[currentActIndex] = true;
+        statusLabel.textContent = "⭐ Wonderful! You got it right!";
+
+        // Update star icon instantly
+        const slot = document.querySelector(`.star-slot[data-star="${currentActIndex}"]`);
+        if (slot) slot.classList.add('earned');
+
+        setTimeout(() => {
+          if (currentActIndex < STORY_ACTS.length - 1) {
+            currentActIndex++;
+            renderCurrentAct();
+            readCurrentAct();
+          } else {
+            progressFill.style.width = '100%';
+            showCelebration();
+          }
+        }, 900);
+      } else {
+        cardEl.classList.add('wrong');
+        sound.playTone(180, 0.25, 'sawtooth', 0.2);
+        statusLabel.textContent = "Try again! You can do it!";
+
+        setTimeout(() => {
+          cardEl.classList.remove('wrong');
+          document.querySelectorAll('.choice-card').forEach(b => b.disabled = false);
+        }, 500);
+      }
+    }
+
+    function showCelebration() {
+      sound.playFanfare();
+      celebrationModal.classList.add('active');
+      launchConfetti();
+    }
+
+    /* ==========================================================================
+       7. CONFETTI ENGINE (PURE JAVASCRIPT)
+       ========================================================================== */
+    function launchConfetti() {
+      const canvas = document.getElementById('confettiCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const pieces = [];
+      const colors = ['#FFD95A', '#7357D9', '#45B97C', '#3A86FF', '#FF6B6B'];
+
+      for (let i = 0; i < 110; i++) {
+        pieces.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          vx: (Math.random() - 0.5) * 16,
+          vy: (Math.random() - 0.8) * 16,
+          size: Math.random() * 8 + 5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rot: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 10
+        });
+      }
+
+      let frame = 0;
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.35; // gravity
+          p.rot += p.vRot;
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot * Math.PI / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+          ctx.restore();
+        });
+
+        frame++;
+        if (frame < 140) {
+          requestAnimationFrame(animate);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+
+    /* ==========================================================================
+       8. EVENT LISTENERS & INTERACTIVE TOUCH SPOTS
+       ========================================================================== */
+    document.getElementById('readBtn').onclick = readCurrentAct;
+
+    document.getElementById('pauseBtn').onclick = () => {
+      if ('speechSynthesis' in window) {
+        if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+          window.speechSynthesis.pause();
+          statusLabel.textContent = "Paused";
+        } else if (window.speechSynthesis.paused) {
+          window.speechSynthesis.resume();
+          statusLabel.textContent = "Reading...";
+        }
+      }
+    };
+
+    document.getElementById('restartBtn').onclick = () => {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      currentActIndex = 0;
+      earnedStars = [false, false, false, false, false];
+      renderCurrentAct();
+    };
+
+    closePhonicsBtn.onclick = () => {
+      phonicsPopup.style.display = 'none';
+    };
+
+    playAgainBtn.onclick = () => {
+      celebrationModal.classList.remove('active');
+      currentActIndex = 0;
+      earnedStars = [false, false, false, false, false];
+      renderCurrentAct();
+    };
+
+    // Speed Toggle
+    speedToggle.onclick = () => {
+      speechRateIndex = (speechRateIndex + 1) % speechRates.length;
+      const rate = speechRates[speechRateIndex];
+      const icon = rate < 0.8 ? '🐢' : rate > 0.9 ? '🐰' : '🚶';
+      speedToggle.textContent = `${icon} ${rate}x`;
+      sound.playTapWord();
+    };
+
+    // Mute Toggle
+    muteBtn.onclick = () => {
+      sound.isMuted = !sound.isMuted;
+      muteBtn.textContent = sound.isMuted ? '🔇' : '🔊';
+    };
+
+    // Fullscreen Toggle
+    fullscreenBtn.onclick = () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+        fullscreenBtn.textContent = '✕';
+      } else {
+        document.exitFullscreen().catch(() => {});
+        fullscreenBtn.textContent = '⛶';
+      }
+    };
+
+    // Stage Interactive Tap Spots
+    svgSun.onclick = () => {
+      sound.playTone(880, 0.3, 'sine', 0.3);
+      svgSun.style.transform = 'scale(1.25)';
+      setTimeout(() => svgSun.style.transform = 'scale(1)', 300);
+      statusLabel.textContent = "☀️ Warm sunshine on the hill!";
+    };
+
+    svgBucket.onclick = () => {
+      sound.playSplash();
+      svgBucket.style.transform += ' rotate(-15deg)';
+      setTimeout(() => updateStageScene(STORY_ACTS[currentActIndex]), 300);
+      statusLabel.textContent = "💧 Splish, splash! Water in the bucket!";
+    };
+
+    svgWell.onclick = () => {
+      sound.playTone(330, 0.35, 'triangle', 0.25);
+      statusLabel.textContent = "🪣 An old stone well at the very top of the hill!";
+    };
+
+    svgCottage.onclick = () => {
+      sound.playChime();
+      statusLabel.textContent = "🏠 Cozy home of Old Dame Dob!";
+    };
+
+    /* ==========================================================================
+       9. PWA INSTALLATION & SERVICE WORKER REGISTRATION
+       ========================================================================== */
+    let deferredPrompt = null;
+    const installBanner = document.getElementById('pwaInstallBanner');
+    const installBtn = document.getElementById('installAppBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBanner.classList.add('show');
+    });
+
+    installBtn.onclick = async () => {
+      if (!deferredPrompt) return;
+      installBanner.classList.remove('show');
+      deferredPrompt.prompt();
+      const choiceResult = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+    };
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then((reg) => console.log('ServiceWorker registered:', reg.scope))
+          .catch((err) => console.log('ServiceWorker registration failed:', err));
+      });
+    }
+
+    // Initialize App
+    renderCurrentAct();
+  </script>
 </body>
 </html>
