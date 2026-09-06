@@ -1925,8 +1925,8 @@
           "of": "o · f",
           "water": "wa · ter"
         },
-        characterPos: { x: 330, y: 195, jackR: 0, jillR: 0, showCrown: true, showPlaster: false },
-        bucketPos: { x: 495, y: 185, rot: 0 },
+        characterPos: { x: 140, y: 285, jackR: 0, jillR: 0, showCrown: true, showPlaster: false },
+        bucketPos: { x: 215, y: 278, rot: 0 },
         question: "Why did Jack and Jill climb the hill?",
         choices: [
           { icon: "🪣 💧", text: "To fetch water", correct: true },
@@ -1956,8 +1956,8 @@
           "tumbling": "tum · bling",
           "after": "af · ter"
         },
-        characterPos: { x: 220, y: 245, jackR: -75, jillR: -45, showCrown: false, showPlaster: false },
-        bucketPos: { x: 370, y: 230, rot: 95 },
+        characterPos: { x: 440, y: 180, jackR: 0, jillR: 0, showCrown: true, showPlaster: false },
+        bucketPos: { x: 515, y: 175, rot: 0 },
         question: "What happened to Jack's crown?",
         choices: [
           { icon: "👑 ⬇️", text: "Fell down & broke", correct: true },
@@ -2239,7 +2239,7 @@
     }
 
     /* ==========================================================================
-       4. LINE-BY-LINE PERFECTLY SYNCHRONIZED KARAOKE READER
+       4. LINE-BY-LINE PERFECTLY SYNCHRONIZED KARAOKE READER & CHOREOGRAPHY
        ========================================================================== */
     let currentLineIndex = 0;
     let readingCanceled = false;
@@ -2249,6 +2249,123 @@
     function clearLineTimers() {
       lineTimers.forEach(t => clearTimeout(t));
       lineTimers = [];
+    }
+
+    function triggerLineChoreography(actIdx, lineIdx) {
+      if (actIdx === 0) {
+        // Act 1: Up the Hill
+        if (lineIdx === 0) {
+          // "Jack and Jill went up the hill"
+          // Smoothly climb from bottom of path (140, 285) up to the well at the top of the hill (440, 180)!
+          statusLabel.textContent = "🧒👧 Jack and Jill are hiking up the winding path to the top of the hill...";
+          svgCharacters.style.transition = "transform 2.9s cubic-bezier(0.25, 1, 0.5, 1)";
+          svgCharacters.setAttribute('transform', 'translate(440, 180)');
+          svgBucket.style.transition = "transform 2.9s cubic-bezier(0.25, 1, 0.5, 1)";
+          svgBucket.setAttribute('transform', 'translate(515, 175) rotate(0, 20, 25)');
+        } else if (lineIdx === 1) {
+          // "To fetch a pail of water."
+          statusLabel.textContent = "🪣 Dipping the bucket into the hilltop well!";
+          svgBucket.style.transition = "transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)";
+          svgBucket.setAttribute('transform', 'translate(535, 155) rotate(-18, 20, 25)');
+          setTimeout(() => {
+            sound.playSplash();
+            svgBucket.style.transition = "transform 0.5s ease";
+            svgBucket.setAttribute('transform', 'translate(515, 175) rotate(0, 20, 25)');
+            statusLabel.textContent = "💧 Splish splash! Fresh cold hill water fetched!";
+          }, 650);
+        }
+      } else if (actIdx === 1) {
+        // Act 2: The Tumble & Spill (They fall from the top of the hill!)
+        if (lineIdx === 0) {
+          // "Jack fell down and broke his crown,"
+          statusLabel.textContent = "💥 Jack trips and tumbles all the way down from the top of the hill!";
+          sound.playBoing();
+
+          // Jack rolls from top (440, 180) down the slope
+          actorJack.style.transition = "transform 1.3s cubic-bezier(0.25, 1, 0.5, 1)";
+          actorJack.setAttribute('transform', 'translate(-240, 85) rotate(-380, 22, 50)');
+
+          // Crown pops off Jack's head into the air with a high spin
+          jackCrown.style.transition = "transform 1s cubic-bezier(0.18, 0.89, 0.32, 1.28)";
+          jackCrown.style.transform = "translate(55px, -28px) rotate(50deg)";
+
+          // Bucket rolls down and spills water
+          svgBucket.style.transition = "transform 1.2s cubic-bezier(0.25, 1, 0.5, 1)";
+          svgBucket.setAttribute('transform', 'translate(360, 235) rotate(110, 20, 25)');
+
+          setTimeout(() => {
+            const dizzy = document.getElementById('jackDizzyStars');
+            if (dizzy) dizzy.style.display = 'block';
+            statusLabel.textContent = "💫 Ouch! Jack broke his crown!";
+          }, 1100);
+        } else if (lineIdx === 1) {
+          // "And Jill came tumbling after."
+          statusLabel.textContent = "👧 And Jill comes tumbling down from the top of the hill right after Jack!";
+          sound.playBoing();
+          actorJill.style.transition = "transform 1.3s cubic-bezier(0.25, 1, 0.5, 1)";
+          actorJill.setAttribute('transform', 'translate(-185, 88) rotate(-340, 24, 50)');
+        }
+      } else if (actIdx === 2) {
+        // Act 3: Trotting Home
+        if (lineIdx === 0) {
+          // "Up Jack got, and home did trot,"
+          statusLabel.textContent = "🧒 Jack hops back up onto his feet and starts trotting home!";
+          sound.playSuccessChime();
+          const dizzy = document.getElementById('jackDizzyStars');
+          if (dizzy) dizzy.style.display = 'none';
+
+          // Jack gets back up on his feet
+          actorJack.style.transition = "transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)";
+          actorJack.setAttribute('transform', 'translate(0, 0) rotate(0, 22, 50)');
+          actorJill.style.transition = "transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)";
+          actorJill.setAttribute('transform', 'translate(56, 4) rotate(0, 24, 50)');
+
+          // Trotting across meadow toward cottage
+          setTimeout(() => {
+            svgCharacters.style.transition = "transform 2.2s cubic-bezier(0.25, 1, 0.5, 1)";
+            svgCharacters.setAttribute('transform', 'translate(130, 235)');
+          }, 450);
+        } else if (lineIdx === 1) {
+          // "As fast as he could caper."
+          statusLabel.textContent = "🏃 Skipping and capering right to Old Dame Dob's cottage!";
+          actorJack.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+          actorJack.style.transform += ' translateY(-14px)';
+          setTimeout(() => {
+            actorJack.style.transform = 'translate(0, 0) rotate(0, 22, 50)';
+          }, 350);
+        }
+      } else if (actIdx === 3) {
+        // Act 4: Old Dame Dob
+        if (lineIdx === 0) {
+          // "To old Dame Dob, who patched his knob,"
+          statusLabel.textContent = "👵 Dame Dob warms the hearth and prepares the brown paper plaster...";
+          sound.playSuccessChime();
+          jackPlaster.style.display = 'block';
+          jackPlaster.style.animation = 'popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        } else if (lineIdx === 1) {
+          // "With vinegar and brown paper."
+          statusLabel.textContent = "📜 Healed with soothing brown paper and vinegar!";
+          sound.playTone(659.25, 0.25, 'sine', 0.2);
+        }
+      } else if (actIdx === 4) {
+        // Act 5: Smiles & Cured Spills
+        if (lineIdx === 0) {
+          // "Then Jill came in, and she did grin,"
+          statusLabel.textContent = "👧 Jill grins with joy to see Jack all healed!";
+          actorJill.style.transition = 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)';
+          actorJill.style.transform += ' translateY(-14px) scale(1.1)';
+          setTimeout(() => {
+            actorJill.style.transform = 'translate(56, 4) rotate(0, 24, 50)';
+          }, 380);
+        } else {
+          // "To see Jack's paper plaster..."
+          statusLabel.textContent = "🎉 Everyone is smiling and happy!";
+          const hearts = document.getElementById('celebrationHearts');
+          if (hearts) hearts.style.display = 'block';
+          const rainbow = document.getElementById('svgRainbow');
+          if (rainbow) rainbow.style.opacity = '0.85';
+        }
+      }
     }
 
     function readCurrentAct() {
@@ -2302,6 +2419,8 @@
         const lineStr = act.lines[currentLineIndex];
         const lineIdx = currentLineIndex;
         currentLineIndex++;
+
+        triggerLineChoreography(currentActIndex, lineIdx);
 
         speakLineWithSync(lineStr, lineIdx, () => {
           if (!readingCanceled && isReadingActive) {
@@ -2630,18 +2749,23 @@
       svgCharacters.setAttribute('transform', `translate(${cp.x}, ${cp.y})`);
 
       actorJack.style.transition = "transform 0.45s ease";
+      actorJack.style.transform = '';
       actorJack.setAttribute('transform', `translate(0, 0) rotate(${cp.jackR}, 22, 50)`);
 
       actorJill.style.transition = "transform 0.45s ease";
+      actorJill.style.transform = '';
       actorJill.setAttribute('transform', `translate(56, 4) rotate(${cp.jillR}, 24, 50)`);
 
       jackCrown.style.display = cp.showCrown ? 'block' : 'none';
+      jackCrown.style.transform = '';
+      jackCrown.style.transition = '';
+
       jackPlaster.style.display = cp.showPlaster ? 'block' : 'none';
 
       // Living animation toggles per narrative act
       const dizzyStars = document.getElementById('jackDizzyStars');
       if (dizzyStars) {
-        dizzyStars.style.display = (act.actNumber === 2) ? 'block' : 'none';
+        dizzyStars.style.display = 'none';
       }
 
       const celebHearts = document.getElementById('celebrationHearts');
