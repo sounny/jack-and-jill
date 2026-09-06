@@ -161,31 +161,12 @@
       background: var(--primary-soft);
     }
 
-    /* PWA Install Banner */
-    #pwaInstallBanner {
-      display: none;
-      background: linear-gradient(90deg, #7357D9, #9175F2);
-      color: white;
-      padding: 8px 14px;
-      border-radius: 14px;
-      margin: 0 14px 8px;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 6px 16px rgba(115, 87, 217, 0.25);
-      flex-shrink: 0;
-    }
-
-    #pwaInstallBanner.show { display: flex; }
-
-    .install-btn {
+    /* PWA Navbar Install Button */
+    #installAppBtn.available {
+      display: grid !important;
       background: var(--yellow);
-      color: var(--ink);
-      border: none;
-      padding: 6px 14px;
-      border-radius: 10px;
-      font-weight: 800;
-      font-size: 0.8rem;
-      cursor: pointer;
+      border-color: #D99B00;
+      animation: pulseGlow 2s infinite;
     }
 
     /* Main Phone-Optimized Container */
@@ -682,6 +663,197 @@
       margin: 8px 0;
     }
 
+    /* Rhyme Fill-in-the-Blank Test Modal */
+    .test-box {
+      background: #FFFFFF;
+      border-radius: 28px;
+      padding: 20px 18px 22px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(32, 18, 77, 0.35);
+      animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      border: 3px solid var(--primary-soft);
+      box-sizing: border-box;
+    }
+
+    .test-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px dashed var(--border-soft);
+    }
+
+    .test-badge {
+      font-family: 'Fredoka', cursive;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .test-close-btn {
+      background: var(--surface);
+      border: 1.5px solid var(--border-soft);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--ink-muted);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      touch-action: manipulation;
+    }
+
+    .test-prompt-card {
+      background: linear-gradient(180deg, #F8F5FF 0%, #EDF3FF 100%);
+      border: 2px solid #D5CEFF;
+      border-radius: 20px;
+      padding: 16px 14px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .test-sentence {
+      font-family: 'Fredoka', cursive;
+      font-size: clamp(1.15rem, 4.4vw, 1.45rem);
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.5;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .blank-slot {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 90px;
+      height: 42px;
+      padding: 2px 14px;
+      background: #FFFFFF;
+      border: 3px dashed var(--primary);
+      border-radius: 14px;
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 1.15rem;
+      box-shadow: 0 4px 12px rgba(115, 87, 217, 0.15);
+      animation: pulseGlow 1.8s infinite;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .blank-slot.filled {
+      background: #38C172;
+      border: 3px solid #278C51;
+      color: #FFFFFF;
+      animation: bounceWin 0.5s ease;
+      box-shadow: 0 6px 18px rgba(56, 193, 114, 0.4);
+    }
+
+    .test-speaker-btn {
+      background: var(--yellow);
+      border: none;
+      border-bottom: 3.5px solid #D99B00;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--ink);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      box-shadow: 0 3px 8px rgba(255, 210, 51, 0.3);
+      touch-action: manipulation;
+    }
+    .test-speaker-btn:active {
+      transform: translateY(2px);
+      border-bottom-width: 1px;
+    }
+
+    .test-status {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 6px;
+    }
+
+    .test-options-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .test-opt-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom: 4.5px solid #CBD5E1;
+      border-radius: 18px;
+      padding: 12px 6px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      font-family: 'Fredoka', cursive;
+      font-weight: 700;
+      font-size: clamp(0.95rem, 3.2vw, 1.15rem);
+      color: var(--ink);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      transition: transform 0.15s ease, border-color 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .test-opt-btn:active:not(:disabled) {
+      transform: translateY(3px);
+      border-bottom-width: 1.5px;
+    }
+
+    .test-opt-btn .opt-emoji {
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    .test-opt-btn.correct {
+      background: #E8F9EE;
+      border-color: #38C172;
+      border-bottom-color: #278C51;
+      color: #19693B;
+      transform: scale(1.05);
+    }
+
+    .test-opt-btn.wrong-wobble {
+      animation: optShake 0.4s ease;
+      background: #FFF0F3;
+      border-color: #FF5E84;
+      border-bottom-color: #D63056;
+      color: #C92A4C;
+    }
+
+    @keyframes bounceWin {
+      0% { transform: scale(0.7); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes optShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
     /* Confetti Canvas */
     #confettiCanvas {
       position: fixed;
@@ -851,22 +1023,24 @@
       animation: sunEyeBlink 4s ease-in-out infinite;
     }
 
-    /* Living Chibi Characters Breathing / Hopping */
+    /* Living Pixar Characters Breathing / Hopping (Decoupled on inner group) */
     @keyframes kidBobJack {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-3.5px) rotate(1deg); }
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3.5px); }
     }
     @keyframes kidBobJill {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-3.5px) rotate(-1deg); }
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3.5px); }
     }
-    .kid-actor-jack {
+    .kid-bob-jack {
       animation: kidBobJack 2.2s ease-in-out infinite;
-      transform-origin: 23px 100px;
+      transform-box: fill-box;
+      transform-origin: center bottom;
     }
-    .kid-actor-jill {
+    .kid-bob-jill {
       animation: kidBobJill 2.6s ease-in-out 0.4s infinite;
-      transform-origin: 25px 100px;
+      transform-box: fill-box;
+      transform-origin: center bottom;
     }
 
     /* Dizzy Circling Stars for Jack in Act 2 Tumble */
@@ -1062,6 +1236,10 @@
       <span class="brand-title">Jack &amp; Jill</span>
     </div>
     <div class="header-controls">
+      <button id="rhymeTestBtn" class="chip-btn" title="Play Rhyme Test">
+        <span class="chip-icon">🎯</span>
+        <span class="chip-label">Quiz</span>
+      </button>
       <button id="voiceBtn" class="chip-btn" title="Change Voice">
         <span class="chip-icon">🗣️</span>
         <span id="voiceLabel" class="chip-label">Voice</span>
@@ -1071,17 +1249,9 @@
         <span id="speedLabel" class="chip-label">0.8x</span>
       </button>
       <button id="soundToggleBtn" class="icon-btn" title="Sound Effects">🔊</button>
+      <button id="installAppBtn" class="icon-btn" title="Install App to Device" style="display: none;">📲</button>
     </div>
   </header>
-
-  <!-- PWA Install Banner -->
-  <div id="pwaInstallBanner">
-    <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.85rem;">
-      <span>📱</span>
-      <span>Add App to Home Screen</span>
-    </div>
-    <button id="installAppBtn" class="install-btn">Install</button>
-  </div>
 
   <main>
     <!-- Star Milestones Ribbon -->
@@ -1140,6 +1310,98 @@
               <stop offset="0%" stop-color="#E05B43"/>
               <stop offset="100%" stop-color="#A8321D"/>
             </linearGradient>
+
+            <!-- Pixar Volumetric Atmosphere & Sunbeams -->
+            <linearGradient id="sunbeamGrad" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#FFF8D6" stop-opacity="0.22"/>
+              <stop offset="40%" stop-color="#FFF0A0" stop-opacity="0.10"/>
+              <stop offset="100%" stop-color="#FFE082" stop-opacity="0"/>
+            </linearGradient>
+
+            <!-- 3D Pillowy Cloud Shading -->
+            <linearGradient id="cloudPillowy" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#FFFFFF"/>
+              <stop offset="70%" stop-color="#F2F6FD"/>
+              <stop offset="100%" stop-color="#D8E5FA"/>
+            </linearGradient>
+
+            <!-- 3D Hill Rim Highlights -->
+            <linearGradient id="hillRimFar" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#B8EBC8" stop-opacity="0.9"/>
+              <stop offset="20%" stop-color="#7CD9A0" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="hillRimMid" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#88FFA8" stop-opacity="0.85"/>
+              <stop offset="20%" stop-color="#55D187" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="hillRimFront" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#B2FF66" stop-opacity="0.9"/>
+              <stop offset="15%" stop-color="#3DC972" stop-opacity="0"/>
+            </linearGradient>
+
+            <!-- Pixar 3D Skin Gradients -->
+            <radialGradient id="jackSkinPixar" cx="45%" cy="35%" r="55%">
+              <stop offset="0%" stop-color="#FFEEDE"/>
+              <stop offset="55%" stop-color="#FFD4B8"/>
+              <stop offset="100%" stop-color="#F5B995"/>
+            </radialGradient>
+            <radialGradient id="jillSkinPixar" cx="45%" cy="35%" r="55%">
+              <stop offset="0%" stop-color="#FFF3EB"/>
+              <stop offset="55%" stop-color="#FFDCBE"/>
+              <stop offset="100%" stop-color="#F7BE9A"/>
+            </radialGradient>
+
+            <!-- Pixar Multi-Tone Irises with Limbal Rings -->
+            <radialGradient id="jackIrisPixar" cx="42%" cy="40%" r="50%">
+              <stop offset="0%" stop-color="#B86C32"/>
+              <stop offset="60%" stop-color="#7A3D14"/>
+              <stop offset="100%" stop-color="#2D1503"/>
+            </radialGradient>
+            <radialGradient id="jillIrisPixar" cx="42%" cy="40%" r="50%">
+              <stop offset="0%" stop-color="#46D878"/>
+              <stop offset="60%" stop-color="#1B8745"/>
+              <stop offset="100%" stop-color="#083818"/>
+            </radialGradient>
+
+            <!-- Pixar 3D Clothing -->
+            <linearGradient id="jackDenimPixar" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#488BE0"/>
+              <stop offset="50%" stop-color="#2B6BC0"/>
+              <stop offset="100%" stop-color="#1E4E94"/>
+            </linearGradient>
+            <linearGradient id="jillDressPixar" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#FF7596"/>
+              <stop offset="60%" stop-color="#FF4774"/>
+              <stop offset="100%" stop-color="#D92250"/>
+            </linearGradient>
+            <linearGradient id="jillApronPixar" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#FFFFFF"/>
+              <stop offset="70%" stop-color="#F7FAFF"/>
+              <stop offset="100%" stop-color="#E1ECFC"/>
+            </linearGradient>
+            <linearGradient id="goldCrownPixar" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFF176"/>
+              <stop offset="45%" stop-color="#FFD54F"/>
+              <stop offset="85%" stop-color="#FFB300"/>
+              <stop offset="100%" stop-color="#FF8F00"/>
+            </linearGradient>
+            <linearGradient id="jackBootPixar" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#73421C"/>
+              <stop offset="70%" stop-color="#4E280C"/>
+              <stop offset="100%" stop-color="#2D1503"/>
+            </linearGradient>
+            <linearGradient id="wellStonePixar" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#8090A0"/>
+              <stop offset="40%" stop-color="#A5B5C5"/>
+              <stop offset="85%" stop-color="#748392"/>
+              <stop offset="100%" stop-color="#556270"/>
+            </linearGradient>
+            <linearGradient id="cottageRoofPixar" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#FF7D5C"/>
+              <stop offset="40%" stop-color="#E25133"/>
+              <stop offset="100%" stop-color="#9C2712"/>
+            </linearGradient>
+
             <filter id="softShadow" x="-10%" y="-10%" width="125%" height="125%">
               <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#1B2A4A" flood-opacity="0.15"/>
             </filter>
@@ -1346,103 +1608,137 @@
             <circle id="drop3" cx="42" cy="8" r="3" fill="#7CEEFF"/>
           </g>
 
-          <!-- Character Dynamic Actors Group -->
+          <!-- Character Dynamic Actors Group (Pixar 3D Styling) -->
           <g id="svgCharacters" transform="translate(290, 185)" filter="url(#softShadow)">
             
-            <!-- JACK (Living Chibi Boy) -->
-            <g id="actorJack" class="kid-actor-jack" transform="translate(0, 0)">
-              <!-- Feet / Boots -->
-              <ellipse cx="16" cy="100" rx="7.5" ry="4.8" fill="#543015"/>
-              <ellipse cx="30" cy="100" rx="7.5" ry="4.8" fill="#543015"/>
-              <!-- Denim Overall Legs -->
-              <rect x="11" y="74" width="9" height="24" rx="4" fill="#2E69B5"/>
-              <rect x="26" y="74" width="9" height="24" rx="4" fill="#2E69B5"/>
-              <!-- Red/White Striped Shirt Underneath -->
-              <rect x="10" y="44" width="26" height="32" rx="8" fill="#FF5E5E"/>
-              <line x1="10" y1="50" x2="36" y2="50" stroke="#FFFFFF" stroke-width="2"/>
-              <line x1="10" y1="56" x2="36" y2="56" stroke="#FFFFFF" stroke-width="2"/>
-              <!-- Denim Overalls Bib & Straps -->
-              <polygon points="12,54 34,54 35,76 11,76" fill="#3D7CC9" rx="4"/>
-              <line x1="14" y1="44" x2="16" y2="55" stroke="#2E69B5" stroke-width="3" stroke-linecap="round"/>
-              <line x1="32" y1="44" x2="30" y2="55" stroke="#2E69B5" stroke-width="3" stroke-linecap="round"/>
-              <circle cx="16" cy="55" r="2" fill="#FFD233"/>
-              <circle cx="30" cy="55" r="2" fill="#FFD233"/>
-              <!-- Hands -->
-              <circle cx="6" cy="68" r="5" fill="#FFD7BA"/>
-              <circle cx="40" cy="68" r="5" fill="#FFD7BA"/>
-              <!-- Neck & Cute Chibi Head -->
-              <rect x="19" y="36" width="8" height="9" fill="#FFD7BA" rx="3"/>
-              <circle cx="23" cy="24" r="20" fill="#FFD7BA"/>
-              <!-- Ears -->
-              <circle cx="4" cy="24" r="4.5" fill="#FFD7BA"/>
-              <circle cx="42" cy="24" r="4.5" fill="#FFD7BA"/>
-              <!-- Swept Brown Hair -->
-              <path d="M4,20 C3,5 17,-1 24,-1 C35,-1 43,5 43,18 C37,11 31,10 24,12 C17,10 10,12 4,20 Z" fill="#6A3A16"/>
-              <path d="M11,10 Q20,16 24,10" stroke="#522B0F" stroke-width="2.2" fill="none"/>
-              <!-- Big Sparkling Chibi Eyes -->
-              <ellipse cx="17" cy="23" rx="3.6" ry="4.2" fill="#2E1C0C"/>
-              <circle cx="18.5" cy="21.5" r="1.5" fill="#FFFFFF"/>
-              <circle cx="15.5" cy="24.5" r="0.8" fill="#FFFFFF"/>
-              <ellipse cx="29" cy="23" rx="3.6" ry="4.2" fill="#2E1C0C"/>
-              <circle cx="30.5" cy="21.5" r="1.5" fill="#FFFFFF"/>
-              <circle cx="27.5" cy="24.5" r="0.8" fill="#FFFFFF"/>
-              <!-- Cheerful Smile & Rosy Blushing Cheeks -->
-              <path d="M18,31 Q23,37 28,31" stroke="#683416" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-              <ellipse cx="12" cy="29" rx="4" ry="2.5" fill="#FF8383" opacity="0.75"/>
-              <ellipse cx="34" cy="29" rx="4" ry="2.5" fill="#FF8383" opacity="0.75"/>
-              <!-- Golden Crown / Brown Paper Plaster -->
-              <polygon id="jackCrown" points="10,10 17,0 23,7 29,0 36,10" fill="#FFD233" stroke="#D99B00" stroke-width="1.5"/>
-              <rect id="jackPlaster" x="13" y="14" width="20" height="10" rx="3" fill="#D4A373" stroke="#8A5A36" stroke-width="1.8" style="display: none;"/>
-              
-              <!-- Dizzy Circling Stars for Act 2 Tumble -->
-              <g id="jackDizzyStars" class="dizzy-stars-spin" style="display: none;">
-                <text x="-2" y="-2" font-size="12">💫</text>
-                <text x="32" y="-4" font-size="10">⭐</text>
-                <text x="16" y="-12" font-size="11">✨</text>
+            <!-- JACK (Pixar 3D Boy) -->
+            <g id="actorJack" transform="translate(0, 0)">
+              <g class="kid-bob-jack">
+                <!-- Chunky Leather Boots with 3D Soles -->
+                <ellipse cx="16" cy="100" rx="8" ry="5" fill="url(#jackBootPixar)"/>
+                <ellipse cx="30" cy="100" rx="8" ry="5" fill="url(#jackBootPixar)"/>
+                <path d="M8,100 Q16,104 24,100" stroke="#1D0E03" stroke-width="2.5" fill="none"/>
+                <path d="M22,100 Q30,104 38,100" stroke="#1D0E03" stroke-width="2.5" fill="none"/>
+                <!-- Denim Overall Legs with Seam Highlights -->
+                <rect x="11" y="74" width="9.5" height="24" rx="4" fill="url(#jackDenimPixar)"/>
+                <rect x="25.5" y="74" width="9.5" height="24" rx="4" fill="url(#jackDenimPixar)"/>
+                <line x1="16" y1="76" x2="16" y2="96" stroke="#5C9DF2" stroke-width="0.8" stroke-dasharray="1.5,1.5"/>
+                <line x1="30" y1="76" x2="30" y2="96" stroke="#5C9DF2" stroke-width="0.8" stroke-dasharray="1.5,1.5"/>
+                <!-- Red/White Ribbed Tee Underneath -->
+                <rect x="10" y="44" width="26" height="32" rx="8" fill="#FF4757"/>
+                <line x1="10" y1="49" x2="36" y2="49" stroke="#FFFFFF" stroke-width="2.5"/>
+                <line x1="10" y1="55" x2="36" y2="55" stroke="#FFFFFF" stroke-width="2.5"/>
+                <!-- Denim Overalls Bib & Straps with Brass Rivets -->
+                <polygon points="12,54 34,54 35,76 11,76" fill="url(#jackDenimPixar)"/>
+                <line x1="14" y1="44" x2="16" y2="55" stroke="#1E4E94" stroke-width="3.5" stroke-linecap="round"/>
+                <line x1="32" y1="44" x2="30" y2="55" stroke="#1E4E94" stroke-width="3.5" stroke-linecap="round"/>
+                <!-- Polished Brass Buttons with Specular Dot -->
+                <circle cx="16" cy="55" r="2.4" fill="#FFD54F"/>
+                <circle cx="15.4" cy="54.4" r="0.8" fill="#FFFFFF"/>
+                <circle cx="30" cy="55" r="2.4" fill="#FFD54F"/>
+                <circle cx="29.4" cy="54.4" r="0.8" fill="#FFFFFF"/>
+                <!-- Hands with Soft Pixar Shading -->
+                <circle cx="6" cy="68" r="5" fill="url(#jackSkinPixar)"/>
+                <circle cx="40" cy="68" r="5" fill="url(#jackSkinPixar)"/>
+                <!-- Neck & Dimensional Pixar Head -->
+                <rect x="19" y="36" width="8" height="9" fill="url(#jackSkinPixar)" rx="3"/>
+                <circle cx="23" cy="24" r="20" fill="url(#jackSkinPixar)"/>
+                <!-- Ears -->
+                <circle cx="4" cy="24" r="4.5" fill="url(#jackSkinPixar)"/>
+                <circle cx="42" cy="24" r="4.5" fill="url(#jackSkinPixar)"/>
+                <!-- Swept Chestnut Hair with Pixar Highlights -->
+                <path d="M4,20 C3,5 17,-2 24,-2 C35,-2 43,5 43,18 C37,11 31,10 24,12 C17,10 10,12 4,20 Z" fill="#6A3815"/>
+                <path d="M10,8 Q20,15 28,8" stroke="#9E5928" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <!-- Expressive Pixar Brows -->
+                <path d="M13,16 Q18,13 22,17" stroke="#45230C" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                <path d="M25,17 Q29,13 34,16" stroke="#45230C" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                <!-- Deep Glossy Pixar Eyes with Double Catchlights -->
+                <ellipse cx="17" cy="23" rx="4" ry="4.5" fill="#FFFFFF"/>
+                <ellipse cx="17" cy="23.5" rx="3.2" ry="3.5" fill="url(#jackIrisPixar)"/>
+                <circle cx="17" cy="23.5" r="1.6" fill="#150B03"/>
+                <circle cx="18.5" cy="21.8" r="1.2" fill="#FFFFFF"/>
+                <circle cx="15.8" cy="24.8" r="0.6" fill="#FFFFFF" opacity="0.8"/>
+                <ellipse cx="29" cy="23" rx="4" ry="4.5" fill="#FFFFFF"/>
+                <ellipse cx="29" cy="23.5" rx="3.2" ry="3.5" fill="url(#jackIrisPixar)"/>
+                <circle cx="29" cy="23.5" r="1.6" fill="#150B03"/>
+                <circle cx="30.5" cy="21.8" r="1.2" fill="#FFFFFF"/>
+                <circle cx="27.8" cy="24.8" r="0.6" fill="#FFFFFF" opacity="0.8"/>
+                <!-- Warm Rosy Cheeks & Cheerful Pixar Smile -->
+                <ellipse cx="12" cy="29" rx="4.5" ry="3" fill="#FF6B6B" opacity="0.45"/>
+                <ellipse cx="34" cy="29" rx="4.5" ry="3" fill="#FF6B6B" opacity="0.45"/>
+                <path d="M18,31 Q23,38 28,31" stroke="#683416" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <!-- Faceted 3D Golden Crown / Plaster -->
+                <polygon id="jackCrown" points="10,10 17,-1 23,7 29,-1 36,10" fill="url(#goldCrownPixar)" stroke="#C67D00" stroke-width="1.2"/>
+                <circle cx="23" cy="5" r="1.2" fill="#FFFFFF"/>
+                <rect id="jackPlaster" x="13" y="14" width="20" height="10" rx="3" fill="#E0B388" stroke="#8A5A36" stroke-width="1.8" style="display: none;"/>
+                
+                <!-- Dizzy Circling Stars for Act 2 Tumble -->
+                <g id="jackDizzyStars" class="dizzy-stars-spin" style="display: none;">
+                  <text x="-2" y="-2" font-size="12">💫</text>
+                  <text x="32" y="-4" font-size="10">⭐</text>
+                  <text x="16" y="-12" font-size="11">✨</text>
+                </g>
               </g>
             </g>
 
-            <!-- JILL (Living Chibi Girl) -->
-            <g id="actorJill" class="kid-actor-jill" transform="translate(56, 4)">
-              <!-- Shoes & White Socks -->
-              <rect x="13" y="94" width="8" height="5" rx="2" fill="#FFFFFF"/>
-              <rect x="29" y="94" width="8" height="5" rx="2" fill="#FFFFFF"/>
-              <ellipse cx="17" cy="100" rx="7" ry="4.5" fill="#C92A4C"/>
-              <ellipse cx="33" cy="100" rx="7" ry="4.5" fill="#C92A4C"/>
-              <!-- Legs -->
-              <rect x="14" y="76" width="7" height="20" rx="3" fill="#FFE0C8"/>
-              <rect x="29" y="76" width="7" height="20" rx="3" fill="#FFE0C8"/>
-              <!-- Pretty Coral/Pink Sundress -->
-              <polygon points="12,46 38,46 46,80 4,80" fill="#FF5E84" rx="6"/>
-              <!-- White Scalloped Apron / Pinafore -->
-              <path d="M16,48 L34,48 L38,76 L12,76 Z" fill="#FFFFFF" opacity="0.95"/>
-              <line x1="18" y1="46" x2="16" y2="76" stroke="#FFD8E2" stroke-width="1.5"/>
-              <line x1="32" y1="46" x2="34" y2="76" stroke="#FFD8E2" stroke-width="1.5"/>
-              <!-- Hands -->
-              <circle cx="4" cy="65" r="4.5" fill="#FFD7BA"/>
-              <circle cx="46" cy="65" r="4.5" fill="#FFD7BA"/>
-              <!-- Neck & Chibi Head -->
-              <rect x="21" y="36" width="8" height="9" fill="#FFD7BA" rx="3"/>
-              <circle cx="25" cy="24" r="19.5" fill="#FFD7BA"/>
-              <!-- Blonde Hair & Bouncy Pigtails with Ribbons -->
-              <path d="M7,21 C6,6 18,0 25,0 C35,0 44,6 44,21 C39,13 33,11 25,13 C17,11 11,13 7,21 Z" fill="#F4B733"/>
-              <!-- Left Pigtail & Ribbon -->
-              <circle cx="2" cy="24" r="9" fill="#F4B733"/>
-              <circle cx="6" cy="18" r="4" fill="#FF3366"/>
-              <!-- Right Pigtail & Ribbon -->
-              <circle cx="48" cy="24" r="9" fill="#F4B733"/>
-              <circle cx="44" cy="18" r="4" fill="#FF3366"/>
-              <!-- Big Sparkling Green Chibi Eyes -->
-              <ellipse cx="19" cy="23" rx="3.6" ry="4.2" fill="#1C5E3B"/>
-              <circle cx="20.5" cy="21.5" r="1.5" fill="#FFFFFF"/>
-              <circle cx="17.5" cy="24.5" r="0.8" fill="#FFFFFF"/>
-              <ellipse cx="31" cy="23" rx="3.6" ry="4.2" fill="#1C5E3B"/>
-              <circle cx="32.5" cy="21.5" r="1.5" fill="#FFFFFF"/>
-              <circle cx="29.5" cy="24.5" r="0.8" fill="#FFFFFF"/>
-              <!-- Big Happy Smile & Rosy Cheeks -->
-              <path d="M20,31 Q25,37 30,31" stroke="#683416" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-              <ellipse cx="13" cy="29" rx="4" ry="2.5" fill="#FF8383" opacity="0.8"/>
-              <ellipse cx="37" cy="29" rx="4" ry="2.5" fill="#FF8383" opacity="0.8"/>
+            <!-- JILL (Pixar 3D Girl) -->
+            <g id="actorJill" transform="translate(56, 4)">
+              <g class="kid-bob-jill">
+                <!-- Red Patent Shoes & White Socks -->
+                <rect x="13" y="94" width="8" height="5" rx="2" fill="#FFFFFF"/>
+                <rect x="29" y="94" width="8" height="5" rx="2" fill="#FFFFFF"/>
+                <ellipse cx="17" cy="100" rx="7.5" ry="4.8" fill="#D92250"/>
+                <ellipse cx="33" cy="100" rx="7.5" ry="4.8" fill="#D92250"/>
+                <circle cx="15" cy="98" r="1.2" fill="#FFFFFF" opacity="0.7"/>
+                <circle cx="31" cy="98" r="1.2" fill="#FFFFFF" opacity="0.7"/>
+                <!-- Legs with Soft Skin Gradient -->
+                <rect x="14" y="76" width="7" height="20" rx="3" fill="url(#jillSkinPixar)"/>
+                <rect x="29" y="76" width="7" height="20" rx="3" fill="url(#jillSkinPixar)"/>
+                <!-- Vibrant Coral/Watermelon Pixar Sundress -->
+                <polygon points="12,46 38,46 47,80 3,80" fill="url(#jillDressPixar)"/>
+                <path d="M12,46 Q25,50 38,46 L43,80 Q25,84 7,80 Z" fill="#FF5E84" opacity="0.5"/>
+                <!-- White Scalloped Pinafore Apron -->
+                <path d="M16,48 L34,48 L38,76 L12,76 Z" fill="url(#jillApronPixar)"/>
+                <line x1="18" y1="46" x2="16" y2="76" stroke="#FFCCD6" stroke-width="1.5"/>
+                <line x1="32" y1="46" x2="34" y2="76" stroke="#FFCCD6" stroke-width="1.5"/>
+                <!-- Hands -->
+                <circle cx="4" cy="65" r="4.8" fill="url(#jillSkinPixar)"/>
+                <circle cx="46" cy="65" r="4.8" fill="url(#jillSkinPixar)"/>
+                <!-- Neck & 3D Pixar Head -->
+                <rect x="21" y="36" width="8" height="9" fill="url(#jillSkinPixar)" rx="3"/>
+                <circle cx="25" cy="24" r="19.5" fill="url(#jillSkinPixar)"/>
+                <!-- Silky Golden Blonde Hair & Bouncy Pigtails with Gloss -->
+                <path d="M7,21 C6,5 18,-1 25,-1 C35,-1 44,5 44,21 C39,13 33,11 25,13 C17,11 11,13 7,21 Z" fill="#F4B733"/>
+                <path d="M12,7 Q25,14 38,7" stroke="#FFEAA7" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <!-- Left Pigtail & Ribbon -->
+                <circle cx="2" cy="24" r="9.5" fill="#F4B733"/>
+                <circle cx="2" cy="22" r="7" fill="#FFEAA7" opacity="0.5"/>
+                <circle cx="6" cy="18" r="4.5" fill="#FF2E63"/>
+                <circle cx="6" cy="17" r="1.5" fill="#FFFFFF" opacity="0.8"/>
+                <!-- Right Pigtail & Ribbon -->
+                <circle cx="48" cy="24" r="9.5" fill="#F4B733"/>
+                <circle cx="48" cy="22" r="7" fill="#FFEAA7" opacity="0.5"/>
+                <circle cx="44" cy="18" r="4.5" fill="#FF2E63"/>
+                <circle cx="44" cy="17" r="1.5" fill="#FFFFFF" opacity="0.8"/>
+                <!-- Expressive Pixar Brows -->
+                <path d="M15,16 Q20,13 24,17" stroke="#7A4D00" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                <path d="M26,17 Q30,13 35,16" stroke="#7A4D00" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                <!-- Radiant Emerald Pixar Eyes with Double Catchlights -->
+                <ellipse cx="19" cy="23" rx="4" ry="4.5" fill="#FFFFFF"/>
+                <ellipse cx="19" cy="23.5" rx="3.2" ry="3.5" fill="url(#jillIrisPixar)"/>
+                <circle cx="19" cy="23.5" r="1.6" fill="#06240E"/>
+                <circle cx="20.5" cy="21.8" r="1.2" fill="#FFFFFF"/>
+                <circle cx="17.8" cy="24.8" r="0.6" fill="#FFFFFF" opacity="0.8"/>
+                <ellipse cx="31" cy="23" rx="4" ry="4.5" fill="#FFFFFF"/>
+                <ellipse cx="31" cy="23.5" rx="3.2" ry="3.5" fill="url(#jillIrisPixar)"/>
+                <circle cx="31" cy="23.5" r="1.6" fill="#06240E"/>
+                <circle cx="32.5" cy="21.8" r="1.2" fill="#FFFFFF"/>
+                <circle cx="29.8" cy="24.8" r="0.6" fill="#FFFFFF" opacity="0.8"/>
+                <!-- Blushing Rosy Cheeks & Sweet Pixar Smile -->
+                <ellipse cx="13" cy="29" rx="4.5" ry="3" fill="#FF6B6B" opacity="0.48"/>
+                <ellipse cx="37" cy="29" rx="4.5" ry="3" fill="#FF6B6B" opacity="0.48"/>
+                <path d="M20,31 Q25,38 30,31" stroke="#683416" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              </g>
             </g>
 
             <!-- Floating Celebration Hearts for Act 5 -->
@@ -1547,15 +1843,56 @@
   <!-- Celebration Modal -->
   <div id="celebrationModal" class="modal-backdrop">
     <div class="modal-box">
-      <div style="font-size: 4rem; margin-bottom: 4px;">🏆</div>
+      <div style="font-size: 3.5rem; margin-bottom: 2px;">🏆</div>
       <h2>Super Star Reader!</h2>
-      <p style="font-weight: 700; color: var(--ink-muted); margin: 6px 0 16px;">
-        You read all 5 acts of Jack and Jill and collected every golden star!
+      <p style="font-weight: 700; color: var(--ink-muted); margin: 6px 0 14px;">
+        You finished the story and collected all golden stars! Ready for the Rhyme Test?
       </p>
-      <div style="font-size: 2.2rem; margin-bottom: 16px;">⭐⭐⭐⭐⭐</div>
-      <button id="playAgainBtn" class="play-btn" style="width: 100%;">
-        <span>🎉</span> <span>Read Again!</span>
+      <div style="font-size: 2rem; margin-bottom: 14px;">⭐⭐⭐⭐⭐</div>
+      <button id="startTestFromCelebrationBtn" class="play-btn" style="width: 100%; margin-bottom: 8px;">
+        <span>🎯</span> <span>Play Rhyme Test!</span>
       </button>
+      <button id="playAgainBtn" class="sub-btn" style="width: 100%;">
+        <span>↺</span> <span>Read Story Again</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Rhyme Fill-in-the-Blank Test Modal -->
+  <div id="rhymeTestModal" class="modal-backdrop">
+    <div class="test-box">
+      <div class="test-header">
+        <div class="test-badge">
+          <span>🎯</span> <span id="testTitleText">Rhyme Challenge</span>
+        </div>
+        <div id="testProgressBadges" style="display: flex; gap: 3px; font-size: 1.1rem;"></div>
+        <button id="closeTestBtn" class="test-close-btn" title="Back to Story">✕</button>
+      </div>
+
+      <div id="testActiveCard">
+        <div class="test-prompt-card">
+          <div id="testSentence" class="test-sentence"></div>
+          <button id="testSpeakBtn" class="test-speaker-btn" title="Listen again">
+            <span>🔊</span> <span>Listen Again</span>
+          </button>
+        </div>
+        <div id="testStatusLabel" class="test-status">What is the next word?</div>
+        <div id="testOptionsRow" class="test-options-grid"></div>
+      </div>
+
+      <div id="testCompletedCard" style="display: none; padding: 10px 0;">
+        <div style="font-size: 4rem; margin-bottom: 6px;">🏅</div>
+        <h2 style="font-family: 'Fredoka', cursive; color: var(--primary); font-size: 1.8rem; margin: 4px 0;">Rhyme Master Champion!</h2>
+        <p style="font-weight: 700; color: var(--ink-muted); margin: 6px 0 16px;">
+          You filled in every blank and mastered all the rhymes!
+        </p>
+        <button id="playTestAgainBtn" class="play-btn" style="width: 100%; margin-bottom: 8px;">
+          <span>🎯</span> <span>Play Again (New Words)</span>
+        </button>
+        <button id="finishTestBtn" class="sub-btn" style="width: 100%;">
+          <span>📖</span> <span>Back to Story</span>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1852,18 +2189,31 @@
     function populateVoices() {
       if ('speechSynthesis' in window) {
         const rawVoices = window.speechSynthesis.getVoices();
-        // Filter english voices
-        speechVoices = rawVoices.filter(v => v.lang.startsWith('en'));
-        if (speechVoices.length === 0) speechVoices = rawVoices;
+        let enVoices = rawVoices.filter(v => v.lang.startsWith('en'));
+        if (enVoices.length === 0) enVoices = rawVoices;
 
-        // Auto-select best natural Google voice if available
-        const googleIdx = speechVoices.findIndex(v => 
-          v.name.includes('Google US English') || 
-          v.name.includes('Google UK English Female') || 
-          v.name.includes('Natural') || 
-          v.name.includes('Samantha')
-        );
-        if (googleIdx !== -1) selectedVoiceIndex = googleIdx;
+        // Rank natural neural voices first so speech sounds human and expressive
+        function voiceScore(v) {
+          const name = v.name.toLowerCase();
+          if (name.includes('natural') || name.includes('neural')) return 100;
+          if (name.includes('google us english') || name.includes('google uk english female')) return 95;
+          if (name.includes('enhanced') || name.includes('premium')) return 85;
+          if (name.includes('samantha') || name.includes('karen') || name.includes('serena') || name.includes('jenny')) return 75;
+          if (v.localService === false) return 65; // Cloud neural voice
+          if (name.includes('david desktop') || name.includes('zira desktop') || name.includes('espeak')) return 10;
+          return 50;
+        }
+
+        enVoices.sort((a, b) => voiceScore(b) - voiceScore(a));
+        speechVoices = enVoices;
+        selectedVoiceIndex = 0;
+
+        if (speechVoices.length > 0) {
+          const v = speechVoices[selectedVoiceIndex];
+          const shortName = v.name.replace(/Microsoft|Google|English|United States|Online|\(Natural\)/gi, '').trim() || v.name.slice(0, 8);
+          const voiceLabel = document.getElementById('voiceLabel');
+          if (voiceLabel) voiceLabel.textContent = shortName;
+        }
       }
     }
 
@@ -2280,10 +2630,10 @@
       svgCharacters.setAttribute('transform', `translate(${cp.x}, ${cp.y})`);
 
       actorJack.style.transition = "transform 0.45s ease";
-      actorJack.setAttribute('transform', `rotate(${cp.jackR}, 22, 50)`);
+      actorJack.setAttribute('transform', `translate(0, 0) rotate(${cp.jackR}, 22, 50)`);
 
       actorJill.style.transition = "transform 0.45s ease";
-      actorJill.setAttribute('transform', `translate(50, 6) rotate(${cp.jillR}, 24, 50)`);
+      actorJill.setAttribute('transform', `translate(56, 4) rotate(${cp.jillR}, 24, 50)`);
 
       jackCrown.style.display = cp.showCrown ? 'block' : 'none';
       jackPlaster.style.display = cp.showPlaster ? 'block' : 'none';
@@ -2541,25 +2891,284 @@
     };
 
     /* ==========================================================================
-       10. PWA INSTALLATION & SERVICE WORKER
+       10. FILL-IN-THE-BLANK RHYME TEST ENGINE
+       ========================================================================== */
+    const RHYME_TEST_BANK = [
+      {
+        leadIn: "Jack and Jill went up the",
+        blank: "hill",
+        fullSentence: "Jack and Jill went up the hill!",
+        options: [
+          { word: "hill", icon: "⛰️", correct: true },
+          { word: "river", icon: "🌊", correct: false },
+          { word: "tree", icon: "🌳", correct: false }
+        ]
+      },
+      {
+        leadIn: "To fetch a pail of",
+        blank: "water",
+        fullSentence: "To fetch a pail of water!",
+        options: [
+          { word: "water", icon: "💧", correct: true },
+          { word: "milk", icon: "🥛", correct: false },
+          { word: "sand", icon: "🏖️", correct: false }
+        ]
+      },
+      {
+        leadIn: "Jack fell down and broke his",
+        blank: "crown",
+        fullSentence: "Jack fell down and broke his crown!",
+        options: [
+          { word: "crown", icon: "👑", correct: true },
+          { word: "shoe", icon: "👟", correct: false },
+          { word: "wagon", icon: "🛒", correct: false }
+        ]
+      },
+      {
+        leadIn: "And Jill came tumbling",
+        blank: "after",
+        fullSentence: "And Jill came tumbling after!",
+        options: [
+          { word: "after", icon: "🏃", correct: true },
+          { word: "faster", icon: "⚡", correct: false },
+          { word: "laughter", icon: "😄", correct: false }
+        ]
+      },
+      {
+        leadIn: "Up Jack got, and home did",
+        blank: "trot",
+        fullSentence: "Up Jack got, and home did trot!",
+        options: [
+          { word: "trot", icon: "🐎", correct: true },
+          { word: "hop", icon: "🐰", correct: false },
+          { word: "sleep", icon: "😴", correct: false }
+        ]
+      },
+      {
+        leadIn: "As fast as he could",
+        blank: "caper",
+        fullSentence: "As fast as he could caper!",
+        options: [
+          { word: "caper", icon: "🤸", correct: true },
+          { word: "walk", icon: "🚶", correct: false },
+          { word: "fly", icon: "🚀", correct: false }
+        ]
+      },
+      {
+        leadIn: "To old Dame Dob, who patched his",
+        blank: "knob",
+        fullSentence: "To old Dame Dob, who patched his knob!",
+        options: [
+          { word: "knob", icon: "🤕", correct: true },
+          { word: "door", icon: "🚪", correct: false },
+          { word: "hat", icon: "👒", correct: false }
+        ]
+      },
+      {
+        leadIn: "With vinegar and brown",
+        blank: "paper",
+        fullSentence: "With vinegar and brown paper!",
+        options: [
+          { word: "paper", icon: "📜", correct: true },
+          { word: "sugar", icon: "🍬", correct: false },
+          { word: "paint", icon: "🎨", correct: false }
+        ]
+      }
+    ];
+
+    let activeTestQuestions = [];
+    let currentTestQIdx = 0;
+    let testScore = 0;
+
+    function startRhymeTest() {
+      // Pick 4 random distinct questions from the bank
+      const pool = [...RHYME_TEST_BANK];
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      activeTestQuestions = pool.slice(0, 4);
+      currentTestQIdx = 0;
+      testScore = 0;
+
+      document.getElementById('testActiveCard').style.display = 'block';
+      document.getElementById('testCompletedCard').style.display = 'none';
+      document.getElementById('rhymeTestModal').classList.add('active');
+
+      renderTestQuestion();
+    }
+
+    function renderTestQuestion() {
+      if (currentTestQIdx >= activeTestQuestions.length) {
+        finishRhymeTest();
+        return;
+      }
+
+      const q = activeTestQuestions[currentTestQIdx];
+      const badges = document.getElementById('testProgressBadges');
+      if (badges) {
+        badges.innerHTML = activeTestQuestions.map((_, i) => 
+          `<span style="opacity: ${i < currentTestQIdx ? '1' : i === currentTestQIdx ? '0.85' : '0.3'};">⭐</span>`
+        ).join('');
+      }
+
+      document.getElementById('testTitleText').textContent = `Rhyme ${currentTestQIdx + 1} of ${activeTestQuestions.length}`;
+      document.getElementById('testStatusLabel').textContent = "What is the next word?";
+
+      const sentenceEl = document.getElementById('testSentence');
+      sentenceEl.innerHTML = `${q.leadIn} <span class="blank-slot" id="testBlankSlot">❓</span>`;
+
+      // Shuffle options
+      const shuffledOptions = [...q.options];
+      for (let i = shuffledOptions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+      }
+
+      const optRow = document.getElementById('testOptionsRow');
+      optRow.innerHTML = '';
+      shuffledOptions.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'test-opt-btn';
+        btn.innerHTML = `<span class="opt-emoji">${opt.icon}</span><span>${opt.word}</span>`;
+        btn.onclick = () => handleTestChoice(opt, btn, q);
+        optRow.appendChild(btn);
+      });
+
+      // Automatically read prompt
+      readTestQuestion(q);
+    }
+
+    function readTestQuestion(q) {
+      if (!('speechSynthesis' in window)) return;
+      if (window.speechSynthesis.paused) window.speechSynthesis.resume();
+      window.speechSynthesis.cancel();
+
+      const leadInUtter = new SpeechSynthesisUtterance(q.leadIn);
+      window._currentUtterance = leadInUtter;
+      leadInUtter.rate = 0.85;
+      leadInUtter.pitch = 1.05;
+      if (speechVoices.length > 0) {
+        leadInUtter.voice = speechVoices[selectedVoiceIndex] || speechVoices[0];
+      }
+
+      leadInUtter.onend = () => {
+        setTimeout(() => {
+          const askUtter = new SpeechSynthesisUtterance("What is the next word?");
+          askUtter.rate = 0.9;
+          askUtter.pitch = 1.15;
+          if (speechVoices.length > 0) {
+            askUtter.voice = speechVoices[selectedVoiceIndex] || speechVoices[0];
+          }
+          window.speechSynthesis.speak(askUtter);
+        }, 350);
+      };
+
+      window.speechSynthesis.speak(leadInUtter);
+    }
+
+    function handleTestChoice(opt, btnEl, q) {
+      document.querySelectorAll('.test-opt-btn').forEach(b => b.disabled = true);
+
+      if (opt.correct) {
+        btnEl.classList.add('correct');
+        const slot = document.getElementById('testBlankSlot');
+        if (slot) {
+          slot.classList.add('filled');
+          slot.textContent = `${opt.icon} ${opt.word}!`;
+        }
+        sound.playSuccessChime();
+        testScore++;
+        document.getElementById('testStatusLabel').textContent = "⭐ Correct! Amazing!";
+
+        // Excitedly speak the completed rhyme!
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          setTimeout(() => {
+            const utter = new SpeechSynthesisUtterance(`${opt.word}! ${q.fullSentence}`);
+            utter.rate = 0.88;
+            utter.pitch = 1.1;
+            if (speechVoices.length > 0) {
+              utter.voice = speechVoices[selectedVoiceIndex] || speechVoices[0];
+            }
+            window.speechSynthesis.speak(utter);
+          }, 150);
+        }
+
+        setTimeout(() => {
+          currentTestQIdx++;
+          renderTestQuestion();
+        }, 1500);
+      } else {
+        btnEl.classList.add('wrong-wobble');
+        sound.playEncouragingTryAgain();
+        document.getElementById('testStatusLabel').textContent = "Try again! Which word rhymes?";
+
+        setTimeout(() => {
+          btnEl.classList.remove('wrong-wobble');
+          document.querySelectorAll('.test-opt-btn').forEach(b => b.disabled = false);
+        }, 500);
+      }
+    }
+
+    function finishRhymeTest() {
+      sound.playFanfare();
+      launchConfetti();
+      document.getElementById('testActiveCard').style.display = 'none';
+      document.getElementById('testCompletedCard').style.display = 'block';
+    }
+
+    // Rhyme Test Event Listeners
+    const rhymeTestBtn = document.getElementById('rhymeTestBtn');
+    if (rhymeTestBtn) rhymeTestBtn.onclick = () => startRhymeTest();
+
+    const startTestFromCelebration = document.getElementById('startTestFromCelebrationBtn');
+    if (startTestFromCelebration) {
+      startTestFromCelebration.onclick = () => {
+        document.getElementById('celebrationModal').classList.remove('active');
+        startRhymeTest();
+      };
+    }
+
+    const closeTestBtn = document.getElementById('closeTestBtn');
+    if (closeTestBtn) closeTestBtn.onclick = () => document.getElementById('rhymeTestModal').classList.remove('active');
+
+    const finishTestBtn = document.getElementById('finishTestBtn');
+    if (finishTestBtn) finishTestBtn.onclick = () => document.getElementById('rhymeTestModal').classList.remove('active');
+
+    const playTestAgainBtn = document.getElementById('playTestAgainBtn');
+    if (playTestAgainBtn) playTestAgainBtn.onclick = () => startRhymeTest();
+
+    const testSpeakBtn = document.getElementById('testSpeakBtn');
+    if (testSpeakBtn) {
+      testSpeakBtn.onclick = () => {
+        if (activeTestQuestions[currentTestQIdx]) {
+          readTestQuestion(activeTestQuestions[currentTestQIdx]);
+        }
+      };
+    }
+
+    /* ==========================================================================
+       11. PWA INSTALLATION & SERVICE WORKER
        ========================================================================== */
     let deferredPrompt = null;
-    const installBanner = document.getElementById('pwaInstallBanner');
     const installBtn = document.getElementById('installAppBtn');
 
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      installBanner.classList.add('show');
+      if (installBtn) installBtn.classList.add('available');
     });
 
-    installBtn.onclick = async () => {
-      if (!deferredPrompt) return;
-      installBanner.classList.remove('show');
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-    };
+    if (installBtn) {
+      installBtn.onclick = async () => {
+        if (!deferredPrompt) return;
+        installBtn.classList.remove('available');
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+      };
+    }
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
