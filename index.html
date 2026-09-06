@@ -194,7 +194,7 @@
       width: 100%;
       max-width: 680px;
       margin: 0 auto;
-      padding: 0 14px 18px;
+      padding: 0 14px max(18px, env(safe-area-inset-bottom));
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -349,34 +349,42 @@
 
     .word-chip {
       font-family: 'Fredoka', cursive;
-      font-size: clamp(1.45rem, 5.5vw, 2.2rem);
+      font-size: clamp(1.35rem, 5.2vw, 2.05rem);
       font-weight: 700;
       padding: 5px 12px;
-      border-radius: 14px;
+      border-radius: 16px;
       border: 2px solid transparent;
+      border-bottom: 3.5px solid #E4DCF9;
       background: #F8F6FE;
       color: var(--ink);
       cursor: pointer;
       line-height: 1.15;
       touch-action: manipulation;
-      transition: background 0.1s ease, transform 0.12s ease, border-color 0.1s;
+      transition: background 0.1s ease, transform 0.08s ease, border-color 0.1s, border-bottom 0.08s;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .word-chip:hover {
       background: #FFF9DB;
       border-color: var(--yellow);
+      border-bottom-color: #E8B800;
     }
 
     .word-chip:active {
-      transform: scale(0.92);
+      transform: translateY(2px) scale(0.96);
+      border-bottom-width: 1px;
     }
 
-    /* Active Flashing Highlight - Bright, readable, golden */
+    /* Active Flashing Highlight - Bright, readable, golden with 3D depth */
     .word-chip.active {
       background: var(--yellow) !important;
       border-color: #E8B800 !important;
+      border-bottom: 4px solid #C49700 !important;
       color: #000000 !important;
-      transform: scale(1.1) translateY(-2px);
+      transform: scale(1.08) translateY(-2px);
       box-shadow: 0 6px 18px rgba(255, 210, 51, 0.6);
       z-index: 2;
     }
@@ -434,7 +442,7 @@
       min-height: 20px;
     }
 
-    /* Ergonomic Bottom Floating Action Bar */
+    /* Ergonomic Bottom Floating Action Bar with 3D Push-Down Physics */
     .action-bar {
       display: flex;
       gap: 8px;
@@ -445,38 +453,43 @@
 
     .play-btn {
       flex: 2;
-      background: var(--primary);
+      background: linear-gradient(180deg, #8768F2 0%, #7357D9 100%);
       color: white;
       border: none;
-      border-radius: 18px;
+      border-bottom: 4px solid #4D31A6;
+      border-radius: 20px;
       padding: 12px 16px;
       font-family: 'Fredoka', cursive;
-      font-size: 1.15rem;
+      font-size: clamp(1.1rem, 4vw, 1.25rem);
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      box-shadow: 0 6px 18px rgba(115, 87, 217, 0.35);
+      box-shadow: 0 4px 14px rgba(115, 87, 217, 0.35);
       touch-action: manipulation;
-      transition: transform 0.12s ease, background 0.15s;
+      transition: transform 0.08s ease, background 0.15s, border-bottom 0.08s, box-shadow 0.08s;
+      min-height: 52px;
     }
 
     .play-btn:active {
-      transform: scale(0.96);
+      transform: translateY(3px);
+      border-bottom-width: 1px;
+      box-shadow: 0 1px 4px rgba(115, 87, 217, 0.4);
       background: var(--primary-dark);
     }
 
     .sub-btn {
       flex: 1;
-      background: var(--primary-soft);
+      background: var(--surface);
       color: var(--primary);
-      border: 1.5px solid #DDD3FA;
+      border: 2px solid #E2D9FA;
+      border-bottom: 4px solid #C4B5FD;
       border-radius: 18px;
-      padding: 12px 10px;
+      padding: 11px 8px;
       font-family: 'Fredoka', cursive;
-      font-size: 0.95rem;
+      font-size: clamp(0.9rem, 3.2vw, 1rem);
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -484,14 +497,17 @@
       justify-content: center;
       gap: 4px;
       touch-action: manipulation;
+      transition: transform 0.08s ease, background 0.15s, border-bottom 0.08s;
+      min-height: 52px;
     }
 
     .sub-btn:active {
-      transform: scale(0.95);
-      background: #E6DCFF;
+      transform: translateY(3px);
+      border-bottom-width: 1px;
+      background: #EFEAFF;
     }
 
-    /* Comprehension Question Card */
+    /* Comprehension Question Card with 3D Tactile Option Cards */
     .quiz-card {
       background: #FAF9FF;
       border: 2px dashed #D6CDF5;
@@ -543,39 +559,50 @@
 
     .option-card {
       background: var(--surface);
-      border: 2.5px solid #E6E0F8;
-      border-radius: 16px;
-      padding: 10px 8px;
+      border: 2.5px solid #E4DCF9;
+      border-bottom: 5px solid #C6B6F7;
+      border-radius: 20px;
+      padding: 12px 10px;
       font-family: 'Fredoka', cursive;
-      font-size: 1.05rem;
+      font-size: clamp(1rem, 3.8vw, 1.15rem);
       font-weight: 700;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 4px;
-      box-shadow: var(--shadow-sm);
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(115, 87, 217, 0.08);
       touch-action: manipulation;
-      transition: all 0.15s ease;
-      min-height: 72px;
+      transition: transform 0.08s ease, border-color 0.15s, background 0.15s, border-bottom 0.08s;
+      min-height: 84px;
     }
 
-    .option-card:active { transform: scale(0.95); }
+    .option-card:hover {
+      background: #FAF8FF;
+      border-color: #D4C5F9;
+    }
 
-    .option-card .opt-icon { font-size: 1.8rem; line-height: 1; }
-    .option-card .opt-text { font-size: 0.85rem; color: var(--ink-muted); text-align: center; }
+    .option-card:active {
+      transform: translateY(3px);
+      border-bottom-width: 2px;
+    }
+
+    .option-card .opt-icon { font-size: 2rem; line-height: 1; }
+    .option-card .opt-text { font-size: 0.88rem; color: var(--ink-muted); text-align: center; }
 
     .option-card.correct {
-      border-color: var(--green);
-      background: var(--green-soft);
-      color: #146C36;
+      border-color: #22C55E;
+      border-bottom: 5px solid #16A34A;
+      background: #E8FDF0;
+      color: #15803D;
       transform: scale(1.02);
     }
 
     .option-card.wrong {
-      border-color: var(--coral);
-      background: #FFF0F3;
+      border-color: #F87171;
+      border-bottom: 5px solid #DC2626;
+      background: #FFF1F2;
       animation: shakeCard 0.35s ease;
     }
 
@@ -806,21 +833,127 @@
     }
     .tap-bounce { animation: tapBounce 0.35s ease forwards; }
 
-    /* Option card improved size */
-    .option-card {
-      min-height: 80px;
-      border-radius: 20px;
-      font-size: 1.1rem;
+    /* ==========================================================================
+       LIVING SCENE & CHARACTER ANIMATIONS
+       ========================================================================== */
+
+    /* Sun Blinking Eyes */
+    @keyframes sunEyeBlink {
+      0%, 94%, 98%, 100% { transform: scaleY(1); }
+      96% { transform: scaleY(0.12); }
     }
-    .option-card .opt-icon { font-size: 2rem; }
+    .sun-eye {
+      transform-origin: 715px 60px;
+      animation: sunEyeBlink 4s ease-in-out infinite;
+    }
+    .sun-eye-sparkle {
+      transform-origin: 715px 60px;
+      animation: sunEyeBlink 4s ease-in-out infinite;
+    }
 
+    /* Living Chibi Characters Breathing / Hopping */
+    @keyframes kidBobJack {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-3.5px) rotate(1deg); }
+    }
+    @keyframes kidBobJill {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-3.5px) rotate(-1deg); }
+    }
+    .kid-actor-jack {
+      animation: kidBobJack 2.2s ease-in-out infinite;
+      transform-origin: 23px 100px;
+    }
+    .kid-actor-jill {
+      animation: kidBobJill 2.6s ease-in-out 0.4s infinite;
+      transform-origin: 25px 100px;
+    }
 
-    /* Word chip min touch target */
-    .word-chip {
-      min-height: 44px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+    /* Dizzy Circling Stars for Jack in Act 2 Tumble */
+    @keyframes spinDizzy {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .dizzy-stars-spin {
+      animation: spinDizzy 2.8s linear infinite;
+      transform-origin: 23px 10px;
+    }
+
+    /* Floating Celebration Hearts & Stars in Act 5 */
+    @keyframes floatHeart {
+      0% { transform: translateY(0) scale(0.7); opacity: 0; }
+      25% { transform: translateY(-12px) scale(1.1); opacity: 1; }
+      75% { transform: translateY(-32px) scale(1); opacity: 0.9; }
+      100% { transform: translateY(-48px) scale(0.6); opacity: 0; }
+    }
+    .float-heart-1 { animation: floatHeart 2.4s ease-out infinite; }
+    .float-heart-2 { animation: floatHeart 2.8s ease-out 0.8s infinite; }
+    .float-heart-3 { animation: floatHeart 2.6s ease-out 1.5s infinite; }
+
+    /* Cozy Cottage Fireplace Window Flicker */
+    @keyframes hearthFlicker {
+      0%, 100% { fill: #FFEAA7; opacity: 1; filter: drop-shadow(0 0 4px #FFD233); }
+      25% { fill: #FFD285; opacity: 0.85; filter: drop-shadow(0 0 2px #FFA834); }
+      50% { fill: #FFF2BA; opacity: 1; filter: drop-shadow(0 0 6px #FFE066); }
+      75% { fill: #FFAE66; opacity: 0.88; filter: drop-shadow(0 0 3px #FF7A00); }
+    }
+    .hearth-flicker { animation: hearthFlicker 2s ease-in-out infinite; }
+
+    /* Sloshing Water Wave Inside Bucket */
+    @keyframes waterSlosh {
+      0%, 100% { transform: rotate(0deg) scaleY(1); }
+      30% { transform: rotate(5deg) scaleY(1.06); }
+      70% { transform: rotate(-5deg) scaleY(0.94); }
+    }
+    .water-slosh {
+      animation: waterSlosh 2.2s ease-in-out infinite;
+      transform-origin: 24px 20px;
+    }
+
+    /* Second Fluttering Yellow Butterfly */
+    @keyframes butterflyYellowPath {
+      0% { transform: translate(110px, 290px) rotate(15deg); }
+      25% { transform: translate(160px, 260px) rotate(-10deg); }
+      50% { transform: translate(130px, 235px) rotate(20deg); }
+      75% { transform: translate(90px, 260px) rotate(-5deg); }
+      100% { transform: translate(110px, 290px) rotate(15deg); }
+    }
+    .butterfly-fly-yellow { animation: butterflyYellowPath 6.5s ease-in-out infinite; }
+
+    /* Bird Cheerful Wing Flutter & Bobbing */
+    @keyframes birdChirpBob {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      35% { transform: translateY(-3px) rotate(-4deg); }
+      65% { transform: translateY(-4px) rotate(3deg); }
+      85% { transform: translateY(-1px) rotate(0deg); }
+    }
+    .bird-bob { animation: birdChirpBob 2.5s ease-in-out infinite; }
+
+    /* Responsive Tuning for Shorter Mobile Screens */
+    @media (max-height: 740px) {
+      .stage-wrapper {
+        max-height: 180px;
+      }
+      .emoji-ribbon {
+        font-size: clamp(1.6rem, 5vw, 2rem);
+        padding: 0;
+      }
+      .storybook-card {
+        padding: 10px;
+        gap: 8px;
+      }
+      .reader-area {
+        min-height: 72px;
+        gap: 4px;
+      }
+      .play-btn, .sub-btn {
+        min-height: 46px;
+        padding: 8px 12px;
+      }
+      .option-card {
+        min-height: 72px;
+        padding: 8px 6px;
+      }
     }
 
     /* ==========================================================================
@@ -1037,12 +1170,12 @@
             <!-- Sun Core Face -->
             <circle cx="715" cy="65" r="36" fill="url(#sunGlow)"/>
             <!-- Sparkling Eyes with Reflections -->
-            <ellipse cx="704" cy="60" rx="3.8" ry="4.2" fill="#422500"/>
-            <circle cx="705.5" cy="58.5" r="1.5" fill="#FFFFFF"/>
-            <circle cx="702.5" cy="62" r="0.8" fill="#FFFFFF"/>
-            <ellipse cx="726" cy="60" rx="3.8" ry="4.2" fill="#422500"/>
-            <circle cx="727.5" cy="58.5" r="1.5" fill="#FFFFFF"/>
-            <circle cx="724.5" cy="62" r="0.8" fill="#FFFFFF"/>
+            <ellipse cx="704" cy="60" rx="3.8" ry="4.2" fill="#422500" class="sun-eye"/>
+            <circle cx="705.5" cy="58.5" r="1.5" fill="#FFFFFF" class="sun-eye-sparkle"/>
+            <circle cx="702.5" cy="62" r="0.8" fill="#FFFFFF" class="sun-eye-sparkle"/>
+            <ellipse cx="726" cy="60" rx="3.8" ry="4.2" fill="#422500" class="sun-eye"/>
+            <circle cx="727.5" cy="58.5" r="1.5" fill="#FFFFFF" class="sun-eye-sparkle"/>
+            <circle cx="724.5" cy="62" r="0.8" fill="#FFFFFF" class="sun-eye-sparkle"/>
             <!-- Sweet Smile & Rosy Blushing Cheeks -->
             <path d="M707,70 Q715,81 723,70" stroke="#5A2E00" stroke-width="3" fill="none" stroke-linecap="round"/>
             <ellipse cx="698" cy="66" rx="4.5" ry="2.5" fill="#FF8383" opacity="0.8"/>
@@ -1131,7 +1264,7 @@
             <line x1="88" y1="10" x2="88" y2="45" stroke="#8A5A36" stroke-width="2"/>
             <!-- Terracotta Scalloped Roof -->
             <polygon points="12,12 68,-28 124,12" fill="url(#roofGrad)"/>
-            <!-- Cute Little Bluebird on Roof -->
+            <!-- Cute Little Bluebird on Roof with Wing Bobbing -->
             <g class="bird-bob" transform="translate(64, -32)">
               <ellipse cx="0" cy="0" rx="5" ry="3.5" fill="#3A86FF"/>
               <circle cx="4" cy="-2" r="2.8" fill="#3A86FF"/>
@@ -1143,8 +1276,8 @@
             <rect x="50" y="80" width="36" height="4" fill="#5A3215" rx="1.5"/>
             <path d="M52,80 L52,50 Q68,38 84,50 L84,80 Z" fill="#8B5129"/>
             <circle cx="78" cy="62" r="2.5" fill="#FFD233"/>
-            <!-- Glowing Cottage Window with Flower Box -->
-            <rect x="28" y="24" width="18" height="18" fill="#FFEAA7" stroke="#8A5A36" stroke-width="2" rx="3"/>
+            <!-- Glowing Cottage Window with Warm Fireplace Hearth Flicker -->
+            <rect class="hearth-flicker" x="28" y="24" width="18" height="18" fill="#FFEAA7" stroke="#8A5A36" stroke-width="2" rx="3"/>
             <line x1="37" y1="24" x2="37" y2="42" stroke="#8A5A36" stroke-width="1.5"/>
             <line x1="28" y1="33" x2="46" y2="33" stroke="#8A5A36" stroke-width="1.5"/>
             <!-- Flower Planter Box -->
@@ -1200,6 +1333,8 @@
             <path d="M6,18 Q24,-8 42,18" fill="none" stroke="#8C98A6" stroke-width="3.5" stroke-linecap="round"/>
             <!-- Bucket Body with Wooden Staves -->
             <polygon points="8,16 40,16 34,48 14,48" fill="#4287F5"/>
+            <!-- Animated Sloshing Water Wave -->
+            <path class="water-slosh" d="M12,17 Q24,13 36,17 L32,46 L16,46 Z" fill="#2A75E8" opacity="0.85"/>
             <ellipse cx="24" cy="16" rx="16" ry="5" fill="#7CB6FF"/>
             <ellipse cx="24" cy="17" rx="12" ry="3.5" fill="#1856B8"/>
             <!-- Metal Hoops -->
@@ -1214,8 +1349,8 @@
           <!-- Character Dynamic Actors Group -->
           <g id="svgCharacters" transform="translate(290, 185)" filter="url(#softShadow)">
             
-            <!-- JACK (Charming Chibi Boy) -->
-            <g id="actorJack" transform="translate(0, 0)">
+            <!-- JACK (Living Chibi Boy) -->
+            <g id="actorJack" class="kid-actor-jack" transform="translate(0, 0)">
               <!-- Feet / Boots -->
               <ellipse cx="16" cy="100" rx="7.5" ry="4.8" fill="#543015"/>
               <ellipse cx="30" cy="100" rx="7.5" ry="4.8" fill="#543015"/>
@@ -1258,10 +1393,17 @@
               <!-- Golden Crown / Brown Paper Plaster -->
               <polygon id="jackCrown" points="10,10 17,0 23,7 29,0 36,10" fill="#FFD233" stroke="#D99B00" stroke-width="1.5"/>
               <rect id="jackPlaster" x="13" y="14" width="20" height="10" rx="3" fill="#D4A373" stroke="#8A5A36" stroke-width="1.8" style="display: none;"/>
+              
+              <!-- Dizzy Circling Stars for Act 2 Tumble -->
+              <g id="jackDizzyStars" class="dizzy-stars-spin" style="display: none;">
+                <text x="-2" y="-2" font-size="12">💫</text>
+                <text x="32" y="-4" font-size="10">⭐</text>
+                <text x="16" y="-12" font-size="11">✨</text>
+              </g>
             </g>
 
-            <!-- JILL (Adorable Chibi Girl) -->
-            <g id="actorJill" transform="translate(56, 4)">
+            <!-- JILL (Living Chibi Girl) -->
+            <g id="actorJill" class="kid-actor-jill" transform="translate(56, 4)">
               <!-- Shoes & White Socks -->
               <rect x="13" y="94" width="8" height="5" rx="2" fill="#FFFFFF"/>
               <rect x="29" y="94" width="8" height="5" rx="2" fill="#FFFFFF"/>
@@ -1303,9 +1445,16 @@
               <ellipse cx="37" cy="29" rx="4" ry="2.5" fill="#FF8383" opacity="0.8"/>
             </g>
 
+            <!-- Floating Celebration Hearts for Act 5 -->
+            <g id="celebrationHearts" style="display: none;">
+              <text class="float-heart-1" x="15" y="-10" font-size="16">💖</text>
+              <text class="float-heart-2" x="55" y="-18" font-size="14">⭐</text>
+              <text class="float-heart-3" x="85" y="-6" font-size="16">🎉</text>
+            </g>
+
           </g>
 
-          <!-- Swaying Wildflower Patches, Ladybugs & Fluttering Butterfly -->
+          <!-- Swaying Wildflower Patches, Ladybugs & Fluttering Butterflies -->
           <g filter="url(#softShadow)">
             <!-- Daisy Patch Left with Sway -->
             <g class="flower-sway" style="transform-origin: 132px 345px;" transform="translate(130, 340)">
@@ -1329,6 +1478,16 @@
                 <ellipse cx="-5" cy="-3" rx="4.5" ry="6.5" fill="#48B2FF" transform="rotate(-30)"/>
                 <ellipse cx="5" cy="-3" rx="4.5" ry="6.5" fill="#48B2FF" transform="rotate(30)"/>
                 <line x1="0" y1="-6" x2="0" y2="4" stroke="#1D3557" stroke-width="1.8"/>
+              </g>
+            </g>
+            <!-- Animated Fluttering Yellow Butterfly -->
+            <g class="butterfly-fly-yellow">
+              <g class="butterfly-wing">
+                <ellipse cx="-4.5" cy="-2.5" rx="4" ry="5.5" fill="#FFD233" transform="rotate(-30)"/>
+                <ellipse cx="4.5" cy="-2.5" rx="4" ry="5.5" fill="#FFD233" transform="rotate(30)"/>
+                <circle cx="-3.8" cy="-2" r="1.2" fill="#FF5E84"/>
+                <circle cx="3.8" cy="-2" r="1.2" fill="#FF5E84"/>
+                <line x1="0" y1="-5" x2="0" y2="3" stroke="#4A2E00" stroke-width="1.5"/>
               </g>
             </g>
           </g>
@@ -1652,6 +1811,30 @@
           { f: 1046.50, d: 0.6, t: 380 }
         ];
         notes.forEach(n => setTimeout(() => this.playTone(n.f, n.d, 'triangle', 0.28), n.t));
+      }
+
+      playBoing() {
+        if (this.muted) return;
+        this.init();
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(320, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(140, this.ctx.currentTime + 0.18);
+        osc.frequency.exponentialRampToValueAtTime(380, this.ctx.currentTime + 0.35);
+        g.gain.setValueAtTime(0.25, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.38);
+        osc.connect(g);
+        g.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.38);
+      }
+
+      playEncouragingTryAgain() {
+        if (this.muted) return;
+        this.playTone(392.00, 0.18, 'sine', 0.18);
+        setTimeout(() => this.playTone(329.63, 0.24, 'sine', 0.18), 130);
       }
     }
 
@@ -2072,7 +2255,14 @@
       }
 
       optionsRow.innerHTML = '';
-      act.choices.forEach((choice) => {
+      // Dynamically shuffle choices so the correct answer is randomly mixed up!
+      const shuffledChoices = [...act.choices];
+      for (let i = shuffledChoices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledChoices[i], shuffledChoices[j]] = [shuffledChoices[j], shuffledChoices[i]];
+      }
+
+      shuffledChoices.forEach((choice) => {
         const card = document.createElement('button');
         card.className = 'option-card';
         card.innerHTML = `<span class="opt-icon">${choice.icon}</span><span class="opt-text">${choice.text}</span>`;
@@ -2098,6 +2288,17 @@
       jackCrown.style.display = cp.showCrown ? 'block' : 'none';
       jackPlaster.style.display = cp.showPlaster ? 'block' : 'none';
 
+      // Living animation toggles per narrative act
+      const dizzyStars = document.getElementById('jackDizzyStars');
+      if (dizzyStars) {
+        dizzyStars.style.display = (act.actNumber === 2) ? 'block' : 'none';
+      }
+
+      const celebHearts = document.getElementById('celebrationHearts');
+      if (celebHearts) {
+        celebHearts.style.display = (act.actNumber === 5) ? 'block' : 'none';
+      }
+
       const bp = act.bucketPos;
       svgBucket.style.transition = "transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1)";
       svgBucket.setAttribute('transform', `translate(${bp.x}, ${bp.y}) rotate(${bp.rot}, 20, 25)`);
@@ -2122,6 +2323,9 @@
           if (currentActIndex < STORY_ACTS.length - 1) {
             currentActIndex++;
             renderCurrentAct();
+            if (currentActIndex === 1) {
+              sound.playBoing(); // Funny tumble sound effect!
+            }
             readCurrentAct();
             // Smoothly scroll to reader top so phone view stays perfectly framed
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2132,7 +2336,7 @@
         }, 850);
       } else {
         cardEl.classList.add('wrong');
-        sound.playTone(180, 0.25, 'sawtooth', 0.18);
+        sound.playEncouragingTryAgain();
         statusLabel.textContent = "Try again! You can do it!";
 
         setTimeout(() => {
