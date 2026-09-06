@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Jack and Jill - Read & Learn</title>
+<style>
+:root{--ink:#20243a;--purple:#7357d9;--purple2:#eee9ff;--yellow:#ffd95a;--green:#45b97c;--bg:#f7f5ff;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f7f5ff,#fff);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+main{width:min(900px,100%);margin:auto;padding:18px 16px 32px}.top{text-align:center}.badge{display:inline-block;background:var(--yellow);padding:7px 13px;border-radius:999px;font-weight:800;font-size:.9rem}.top h1{font-size:clamp(2rem,7vw,4rem);margin:10px 0 4px}.top p{margin:0 0 18px;font-size:1.1rem}
+.card{background:var(--white);border:2px solid #e5e0f7;border-radius:28px;padding:clamp(18px,5vw,34px);box-shadow:0 12px 35px #31246b12}.visual{font-size:clamp(3rem,13vw,6rem);display:flex;justify-content:center;gap:10px;margin:4px 0 15px}.line{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;min-height:88px}.word{font-size:clamp(1.7rem,6vw,3.2rem);font-weight:800;padding:9px 12px;border-radius:14px;cursor:pointer;line-height:1.05}.word.active{background:var(--yellow);transform:scale(1.04)}.controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px}.btn{border:0;border-radius:16px;padding:14px 20px;font-size:1.05rem;font-weight:800;cursor:pointer;min-width:145px;touch-action:manipulation}.primary{background:var(--purple);color:#fff}.secondary{background:var(--purple2);color:var(--ink)}.progress{height:10px;background:#ece9f4;border-radius:99px;margin:24px 0 8px;overflow:hidden}.bar{height:100%;background:var(--green);width:0%;transition:.25s}.status{text-align:center;font-weight:700;min-height:24px}.task{margin-top:22px;text-align:center}.task h2{font-size:1.45rem;margin:0 0 10px}.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.choice{background:#fff;border:3px solid #e6e1f5;border-radius:20px;padding:18px 10px;font-size:clamp(1.5rem,5vw,2.3rem);font-weight:800;cursor:pointer;min-height:92px;touch-action:manipulation}.choice.correct{border-color:var(--green);background:#e9faef}.choice.wrong{border-color:#e47b7b;background:#fff0f0}.hint{font-size:.98rem;opacity:.78;margin-top:10px}
+@media(max-width:520px){main{padding:12px}.card{border-radius:22px}.choices{grid-template-columns:1fr 1fr}.btn{width:100%}.word{padding:7px 8px}}
+</style>
+</head>
+<body>
+<main>
+<section class="top"><span class="badge">READ • LISTEN • LEARN</span><h1>Jack and Jill</h1><p>Listen to the rhyme. Tap any word to hear it.</p></section>
+<section class="card">
+<div class="visual" aria-hidden="true"><span>🧒</span><span>👧</span><span>⛰️</span><span>🪣</span></div>
+<div id="line" class="line" aria-live="polite"></div>
+<div class="controls"><button id="read" class="btn primary">🔊 Read to me</button><button id="pause" class="btn secondary">⏸ Pause</button><button id="restart" class="btn secondary">↺ Start over</button></div>
+<div class="progress"><div id="bar" class="bar"></div></div><div id="status" class="status">Ready to read</div>
+<div class="task"><h2>Which picture matches?</h2><div id="choices" class="choices"></div><div class="hint">Tap the best answer.</div></div>
+</section>
+</main>
+<script>
+const lines=[
+ {text:"Jack and Jill went up the hill",emoji:"🧒 👧 ⛰️",choices:["🧒 👧 ⛰️","🏠 🐈 🌳"],answer:0},
+ {text:"To fetch a pail of water",emoji:"🪣 💧",choices:["🍎 🍎 🍎","🪣 💧"],answer:1},
+ {text:"Jack fell down and broke his crown",emoji:"⬇️ 👑",choices:["⬇️ 👑","☀️ 🌈"],answer:0},
+ {text:"And Jill came tumbling after",emoji:"🧒 👧 ⬇️",choices:["🧒 👧 ⬇️","🐟 🌊 🐠"],answer:0},
+ {text:"Up Jack got and home did trot",emoji:"🏠 🧒",choices:["🏠 🧒","⛰️ 🦅"],answer:0}
+];
+let li=0,wi=-1,timer=null;
+const line=document.getElementById('line'),bar=document.getElementById('bar'),status=document.getElementById('status'),choices=document.getElementById('choices');
+function words(){return lines[li].text.split(/\s+/)}
+function render(){line.innerHTML='';words().forEach((w,i)=>{const b=document.createElement('button');b.className='word';b.textContent=w;b.onclick=()=>speakWord(w);line.appendChild(b)});bar.style.width=((li)/lines.length*100)+'%';status.textContent=`Line ${li+1} of ${lines.length}`;renderChoices()}
+function renderChoices(){choices.innerHTML='';lines[li].choices.forEach((c,i)=>{const b=document.createElement('button');b.className='choice';b.textContent=c;b.onclick=()=>check(i,b);choices.appendChild(b)})}
+function speak(text){if(!('speechSynthesis'in window)){status.textContent='Your browser does not support read aloud.';return} speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=.82;u.pitch=1.05;u.onboundary=e=>{if(e.name==='word')highlightAt(e.charIndex)};u.onend=()=>{wi=-1;document.querySelectorAll('.word').forEach(x=>x.classList.remove('active'));status.textContent=`Line ${li+1} complete`};speechSynthesis.speak(u)}
+function highlightAt(pos){const ws=words();let total=0;let idx=0;for(let i=0;i<ws.length;i++){if(pos>=total)idx=i;total+=ws[i].length+1}wi=idx;document.querySelectorAll('.word').forEach((x,i)=>x.classList.toggle('active',i===idx));}
+function speakWord(w){speechSynthesis?.cancel();speak(w.replace(/[.,!?]/g,''))}
+function readCurrent(){speechSynthesis?.cancel();speak(lines[li].text);}
+function check(i,b){document.querySelectorAll('.choice').forEach(x=>x.disabled=true);if(i===lines[li].answer){b.classList.add('correct');status.textContent='Correct!';setTimeout(()=>{if(li<lines.length-1){li++;render();readCurrent()}else{bar.style.width='100%';status.textContent='Great job! You finished the rhyme.'}},700)}else{b.classList.add('wrong');status.textContent='Try again.';setTimeout(()=>{b.classList.remove('wrong');document.querySelectorAll('.choice').forEach(x=>x.disabled=false)},500)}}
+document.getElementById('read').onclick=readCurrent;document.getElementById('pause').onclick=()=>{if(speechSynthesis.speaking&&!speechSynthesis.paused){speechSynthesis.pause();status.textContent='Paused'}else if(speechSynthesis.paused){speechSynthesis.resume();status.textContent='Reading...'}};document.getElementById('restart').onclick=()=>{speechSynthesis?.cancel();li=0;render();status.textContent='Ready to read'};render();
+</script>
+</body>
+</html>
