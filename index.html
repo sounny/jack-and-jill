@@ -1188,8 +1188,30 @@
     const svgCottage = document.getElementById('svgCottage');
 
     /* ==========================================================================
-       4. SPEECH SYNTHESIS ENGINE
+       4. SPEECH SYNTHESIS ENGINE & AUDIO UNLOCK
        ========================================================================== */
+    window._currentUtterance = null;
+    window._highlightTimer = null;
+    let speechVoices = [];
+
+    function loadVoices() {
+      if ('speechSynthesis' in window) {
+        speechVoices = window.speechSynthesis.getVoices();
+      }
+    }
+    loadVoices();
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+
+    // Unlock AudioContext and speech on first user touch/click
+    window.addEventListener('pointerdown', () => {
+      sound.init();
+      if ('speechSynthesis' in window && window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
+    }, { once: true });
+
     function getCleanWord(w) {
       return w.replace(/[.,!?;:"'()]/g, '').trim();
     }
@@ -1198,47 +1220,98 @@
       return act.lines.join(' ').split(/\s+/).map(getCleanWord).filter(Boolean);
     }
 
+    function highlightWordIndex(idx) {
+      const allChips = document.querySelectorAll('.word-chip');
+      allChips.forEach((chip, i) => {
+        chip.classList.toggle('active', i === idx);
+      });
+    }
+
     function speakText(text, onWordCallback, onEndCallback) {
       if (!('speechSynthesis' in window)) {
-        statusLabel.textContent = "Speech synthesis not supported in this browser.";
+        statusLabel.textContent = "Audio speech not supported in this browser.";
         if (onEndCallback) onEndCallback();
         return;
       }
 
+      if (window._highlightTimer) clearInterval(window._highlightTimer);
+
+      // Resume if paused
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
       window.speechSynthesis.cancel();
-      sound.init();
 
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.rate = speechRates[speechRateIndex];
-      utter.pitch = 1.05;
+      // Delay to avoid Chromium bug where cancel() silences immediate speak()
+      setTimeout(() => {
+        sound.init();
+        const utter = new SpeechSynthesisUtterance(text);
+        window._currentUtterance = utter; // Prevent GC bug
 
-      // Select warm natural voice if available
-      const voices = window.speechSynthesis.getVoices();
-      const preferred = voices.find(v => (v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Samantha') || v.name.includes('Google US English'))))
-                     || voices.find(v => v.lang.startsWith('en'));
-      if (preferred) utter.voice = preferred;
+        const rate = speechRates[speechRateIndex];
+        utter.rate = rate;
+        utter.pitch = 1.05;
 
-      utter.onboundary = (e) => {
-        if (e.name === 'word' && onWordCallback) {
-          onWordCallback(e.charIndex);
+        // Pick warm natural English voice if available
+        if (speechVoices.length === 0) loadVoices();
+        if (speechVoices.length > 0) {
+          const preferred = speechVoices.find(v => v.lang.startsWith('en') && (
+            v.name.includes('Natural') || v.name.includes('Samantha') || 
+            v.name.includes('Google US English') || v.name.includes('Karen') || 
+            v.name.includes('Daniel')
+          )) || speechVoices.find(v => v.lang.startsWith('en'));
+          if (preferred) utter.voice = preferred;
         }
-      };
 
-      utter.onend = () => {
-        isSpeaking = false;
-        document.querySelectorAll('.word-chip').forEach(el => el.classList.remove('active'));
-        if (onEndCallback) onEndCallback();
-      };
+        let boundaryFired = false;
+        utter.onboundary = (e) => {
+          if (e.name === 'word' && onWordCallback) {
+            boundaryFired = true;
+            onWordCallback(e.charIndex);
+          }
+        };
 
-      utter.onerror = () => {
-        isSpeaking = false;
-        document.querySelectorAll('.word-chip').forEach(el => el.classList.remove('active'));
-      };
+        // Fallback word highlighting in case browser doesn't fire onboundary (e.g. iOS Safari)
+        const words = text.split(/\s+/);
+        const estimatedDurationMs = Math.max(1200, (words.length / (rate * 2.1)) * 1000);
+        const intervalMs = estimatedDurationMs / words.length;
+        let wordIdx = 0;
 
-      isSpeaking = true;
-      window.speechSynthesis.speak(utter);
+        setTimeout(() => {
+          if (!boundaryFired && isSpeaking) {
+            highlightWordIndex(0);
+            wordIdx = 1;
+            window._highlightTimer = setInterval(() => {
+              if (wordIdx < words.length && isSpeaking) {
+                highlightWordIndex(wordIdx);
+                wordIdx++;
+              } else {
+                clearInterval(window._highlightTimer);
+              }
+            }, intervalMs);
+          }
+        }, 220);
+
+        utter.onend = () => {
+          isSpeaking = false;
+          if (window._highlightTimer) clearInterval(window._highlightTimer);
+          document.querySelectorAll('.word-chip').forEach(el => el.classList.remove('active'));
+          if (onEndCallback) onEndCallback();
+        };
+
+        utter.onerror = (err) => {
+          console.warn("SpeechSynthesis error:", err);
+          isSpeaking = false;
+          if (window._highlightTimer) clearInterval(window._highlightTimer);
+          document.querySelectorAll('.word-chip').forEach(el => el.classList.remove('active'));
+        };
+
+        isSpeaking = true;
+        window.speechSynthesis.speak(utter);
+      }, 50);
     }
 
+    let phonicsTimeout = null;
     function speakWord(rawWord) {
       const clean = getCleanWord(rawWord);
       sound.playTapWord();
@@ -1250,14 +1323,34 @@
       popupPhonics.textContent = phonicsVal;
       phonicsPopup.style.display = 'block';
 
+      if (phonicsTimeout) clearTimeout(phonicsTimeout);
+      phonicsTimeout = setTimeout(() => {
+        phonicsPopup.style.display = 'none';
+      }, 2500);
+
       if ('speechSynthesis' in window) {
+        if (window.speechSynthesis.paused) window.speechSynthesis.resume();
         window.speechSynthesis.cancel();
-        const utter = new SpeechSynthesisUtterance(clean);
-        utter.rate = 0.75;
-        utter.pitch = 1.1;
-        window.speechSynthesis.speak(utter);
+        setTimeout(() => {
+          const utter = new SpeechSynthesisUtterance(clean);
+          window._currentUtterance = utter;
+          utter.rate = 0.75;
+          utter.pitch = 1.1;
+          if (speechVoices.length > 0) {
+            const preferred = speechVoices.find(v => v.lang.startsWith('en'));
+            if (preferred) utter.voice = preferred;
+          }
+          window.speechSynthesis.speak(utter);
+        }, 40);
       }
     }
+
+    // Dismiss phonics popup on outside tap
+    document.addEventListener('pointerdown', (e) => {
+      if (phonicsPopup.style.display === 'block' && !phonicsPopup.contains(e.target) && !e.target.classList.contains('word-chip')) {
+        phonicsPopup.style.display = 'none';
+      }
+    });
 
     function readCurrentAct() {
       const act = STORY_ACTS[currentActIndex];
@@ -1269,7 +1362,6 @@
       speakText(
         fullText,
         (charIndex) => {
-          // Calculate which word chip is active
           let count = 0;
           let activeIndex = -1;
           for (let i = 0; i < allChips.length; i++) {
